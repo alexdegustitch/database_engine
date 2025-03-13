@@ -19,6 +19,9 @@ public:
   virtual void enterQuery(SQLParser::QueryContext * /*ctx*/) override { }
   virtual void exitQuery(SQLParser::QueryContext * /*ctx*/) override { }
 
+  virtual void enterCreateQuery(SQLParser::CreateQueryContext * /*ctx*/) override { }
+  virtual void exitCreateQuery(SQLParser::CreateQueryContext * /*ctx*/) override { }
+
   virtual void enterSelectQuery(SQLParser::SelectQueryContext * /*ctx*/) override { }
   virtual void exitSelectQuery(SQLParser::SelectQueryContext * /*ctx*/) override { }
 
@@ -31,6 +34,12 @@ public:
   virtual void enterUpdateQuery(SQLParser::UpdateQueryContext * /*ctx*/) override { }
   virtual void exitUpdateQuery(SQLParser::UpdateQueryContext * /*ctx*/) override { }
 
+  virtual void enterCreateIndex(SQLParser::CreateIndexContext * /*ctx*/) override { }
+  virtual void exitCreateIndex(SQLParser::CreateIndexContext * /*ctx*/) override { }
+
+  virtual void enterInsertColumns(SQLParser::InsertColumnsContext * /*ctx*/) override { }
+  virtual void exitInsertColumns(SQLParser::InsertColumnsContext * /*ctx*/) override { }
+
   virtual void enterColumns(SQLParser::ColumnsContext * /*ctx*/) override { }
   virtual void exitColumns(SQLParser::ColumnsContext * /*ctx*/) override { }
 
@@ -39,6 +48,9 @@ public:
 
   virtual void enterTableName(SQLParser::TableNameContext * /*ctx*/) override { }
   virtual void exitTableName(SQLParser::TableNameContext * /*ctx*/) override { }
+
+  virtual void enterIndexName(SQLParser::IndexNameContext * /*ctx*/) override { }
+  virtual void exitIndexName(SQLParser::IndexNameContext * /*ctx*/) override { }
 
   virtual void enterWhereClause(SQLParser::WhereClauseContext * /*ctx*/) override { }
   virtual void exitWhereClause(SQLParser::WhereClauseContext * /*ctx*/) override { }
@@ -51,6 +63,12 @@ public:
 
   virtual void enterOperator(SQLParser::OperatorContext * /*ctx*/) override { }
   virtual void exitOperator(SQLParser::OperatorContext * /*ctx*/) override { }
+
+  virtual void enterTableValues(SQLParser::TableValuesContext * /*ctx*/) override { }
+  virtual void exitTableValues(SQLParser::TableValuesContext * /*ctx*/) override { }
+
+  virtual void enterTableValue(SQLParser::TableValueContext * /*ctx*/) override { }
+  virtual void exitTableValue(SQLParser::TableValueContext * /*ctx*/) override { }
 
   virtual void enterValues(SQLParser::ValuesContext * /*ctx*/) override { }
   virtual void exitValues(SQLParser::ValuesContext * /*ctx*/) override { }

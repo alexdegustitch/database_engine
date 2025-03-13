@@ -15,14 +15,16 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, ID = 23, STRING = 24, NUMBER = 25, WS = 26
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, TYPE = 26, 
+    ID = 27, STRING = 28, NUMBER = 29, WS = 30
   };
 
   enum {
-    RuleQuery = 0, RuleSelectQuery = 1, RuleInsertQuery = 2, RuleDeleteQuery = 3, 
-    RuleUpdateQuery = 4, RuleColumns = 5, RuleColumn = 6, RuleTableName = 7, 
-    RuleWhereClause = 8, RuleOrderByClause = 9, RuleCondition = 10, RuleOperator = 11, 
-    RuleValues = 12, RuleValue = 13
+    RuleQuery = 0, RuleCreateQuery = 1, RuleSelectQuery = 2, RuleInsertQuery = 3, 
+    RuleDeleteQuery = 4, RuleUpdateQuery = 5, RuleCreateIndex = 6, RuleInsertColumns = 7, 
+    RuleColumns = 8, RuleColumn = 9, RuleTableName = 10, RuleIndexName = 11, 
+    RuleWhereClause = 12, RuleOrderByClause = 13, RuleCondition = 14, RuleOperator = 15, 
+    RuleTableValues = 16, RuleTableValue = 17, RuleValues = 18, RuleValue = 19
   };
 
   explicit SQLParser(antlr4::TokenStream *input);
@@ -43,17 +45,23 @@ public:
 
 
   class QueryContext;
+  class CreateQueryContext;
   class SelectQueryContext;
   class InsertQueryContext;
   class DeleteQueryContext;
   class UpdateQueryContext;
+  class CreateIndexContext;
+  class InsertColumnsContext;
   class ColumnsContext;
   class ColumnContext;
   class TableNameContext;
+  class IndexNameContext;
   class WhereClauseContext;
   class OrderByClauseContext;
   class ConditionContext;
   class OperatorContext;
+  class TableValuesContext;
+  class TableValueContext;
   class ValuesContext;
   class ValueContext; 
 
@@ -61,10 +69,12 @@ public:
   public:
     QueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    CreateQueryContext *createQuery();
     SelectQueryContext *selectQuery();
     InsertQueryContext *insertQuery();
     DeleteQueryContext *deleteQuery();
     UpdateQueryContext *updateQuery();
+    CreateIndexContext *createIndex();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -74,6 +84,22 @@ public:
   };
 
   QueryContext* query();
+
+  class  CreateQueryContext : public antlr4::ParserRuleContext {
+  public:
+    CreateQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TableNameContext *tableName();
+    TableValuesContext *tableValues();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CreateQueryContext* createQuery();
 
   class  SelectQueryContext : public antlr4::ParserRuleContext {
   public:
@@ -99,6 +125,7 @@ public:
     virtual size_t getRuleIndex() const override;
     TableNameContext *tableName();
     ValuesContext *values();
+    InsertColumnsContext *insertColumns();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -142,6 +169,39 @@ public:
   };
 
   UpdateQueryContext* updateQuery();
+
+  class  CreateIndexContext : public antlr4::ParserRuleContext {
+  public:
+    CreateIndexContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IndexNameContext *indexName();
+    TableNameContext *tableName();
+    ColumnContext *column();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CreateIndexContext* createIndex();
+
+  class  InsertColumnsContext : public antlr4::ParserRuleContext {
+  public:
+    InsertColumnsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ColumnContext *> column();
+    ColumnContext* column(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  InsertColumnsContext* insertColumns();
 
   class  ColumnsContext : public antlr4::ParserRuleContext {
   public:
@@ -188,6 +248,21 @@ public:
   };
 
   TableNameContext* tableName();
+
+  class  IndexNameContext : public antlr4::ParserRuleContext {
+  public:
+    IndexNameContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ID();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  IndexNameContext* indexName();
 
   class  WhereClauseContext : public antlr4::ParserRuleContext {
   public:
@@ -249,6 +324,38 @@ public:
   };
 
   OperatorContext* operator_();
+
+  class  TableValuesContext : public antlr4::ParserRuleContext {
+  public:
+    TableValuesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<TableValueContext *> tableValue();
+    TableValueContext* tableValue(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TableValuesContext* tableValues();
+
+  class  TableValueContext : public antlr4::ParserRuleContext {
+  public:
+    TableValueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ValueContext *value();
+    antlr4::tree::TerminalNode *TYPE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TableValueContext* tableValue();
 
   class  ValuesContext : public antlr4::ParserRuleContext {
   public:

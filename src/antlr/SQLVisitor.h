@@ -21,6 +21,8 @@ public:
    */
     virtual std::any visitQuery(SQLParser::QueryContext *context) = 0;
 
+    virtual std::any visitCreateQuery(SQLParser::CreateQueryContext *context) = 0;
+
     virtual std::any visitSelectQuery(SQLParser::SelectQueryContext *context) = 0;
 
     virtual std::any visitInsertQuery(SQLParser::InsertQueryContext *context) = 0;
@@ -29,11 +31,17 @@ public:
 
     virtual std::any visitUpdateQuery(SQLParser::UpdateQueryContext *context) = 0;
 
+    virtual std::any visitCreateIndex(SQLParser::CreateIndexContext *context) = 0;
+
+    virtual std::any visitInsertColumns(SQLParser::InsertColumnsContext *context) = 0;
+
     virtual std::any visitColumns(SQLParser::ColumnsContext *context) = 0;
 
     virtual std::any visitColumn(SQLParser::ColumnContext *context) = 0;
 
     virtual std::any visitTableName(SQLParser::TableNameContext *context) = 0;
+
+    virtual std::any visitIndexName(SQLParser::IndexNameContext *context) = 0;
 
     virtual std::any visitWhereClause(SQLParser::WhereClauseContext *context) = 0;
 
@@ -42,6 +50,10 @@ public:
     virtual std::any visitCondition(SQLParser::ConditionContext *context) = 0;
 
     virtual std::any visitOperator(SQLParser::OperatorContext *context) = 0;
+
+    virtual std::any visitTableValues(SQLParser::TableValuesContext *context) = 0;
+
+    virtual std::any visitTableValue(SQLParser::TableValueContext *context) = 0;
 
     virtual std::any visitValues(SQLParser::ValuesContext *context) = 0;
 

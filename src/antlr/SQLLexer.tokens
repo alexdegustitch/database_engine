@@ -20,29 +20,36 @@ T__18=19
 T__19=20
 T__20=21
 T__21=22
-ID=23
-STRING=24
-NUMBER=25
-WS=26
-'SELECT'=1
-'FROM'=2
-';'=3
-'INSERT INTO'=4
-'VALUES'=5
-'('=6
-')'=7
-'DELETE FROM'=8
-'UPDATE'=9
-'SET'=10
-'='=11
-'*'=12
-','=13
-'WHERE'=14
-'ORDER BY'=15
-'ASC'=16
-'DESC'=17
-'>'=18
-'<'=19
-'>='=20
-'<='=21
-'<>'=22
+T__22=23
+T__23=24
+T__24=25
+TYPE=26
+ID=27
+STRING=28
+NUMBER=29
+WS=30
+'CREATE TABLE'=1
+'('=2
+')'=3
+';'=4
+'SELECT'=5
+'FROM'=6
+'INSERT INTO'=7
+'VALUES'=8
+'DELETE FROM'=9
+'UPDATE'=10
+'SET'=11
+'='=12
+'CREATE INDEX'=13
+'ON'=14
+','=15
+'*'=16
+'WHERE'=17
+'ORDER BY'=18
+'ASC'=19
+'DESC'=20
+'>'=21
+'<'=22
+'>='=23
+'<='=24
+'<>'=25

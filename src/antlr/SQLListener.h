@@ -17,6 +17,9 @@ public:
   virtual void enterQuery(SQLParser::QueryContext *ctx) = 0;
   virtual void exitQuery(SQLParser::QueryContext *ctx) = 0;
 
+  virtual void enterCreateQuery(SQLParser::CreateQueryContext *ctx) = 0;
+  virtual void exitCreateQuery(SQLParser::CreateQueryContext *ctx) = 0;
+
   virtual void enterSelectQuery(SQLParser::SelectQueryContext *ctx) = 0;
   virtual void exitSelectQuery(SQLParser::SelectQueryContext *ctx) = 0;
 
@@ -29,6 +32,12 @@ public:
   virtual void enterUpdateQuery(SQLParser::UpdateQueryContext *ctx) = 0;
   virtual void exitUpdateQuery(SQLParser::UpdateQueryContext *ctx) = 0;
 
+  virtual void enterCreateIndex(SQLParser::CreateIndexContext *ctx) = 0;
+  virtual void exitCreateIndex(SQLParser::CreateIndexContext *ctx) = 0;
+
+  virtual void enterInsertColumns(SQLParser::InsertColumnsContext *ctx) = 0;
+  virtual void exitInsertColumns(SQLParser::InsertColumnsContext *ctx) = 0;
+
   virtual void enterColumns(SQLParser::ColumnsContext *ctx) = 0;
   virtual void exitColumns(SQLParser::ColumnsContext *ctx) = 0;
 
@@ -37,6 +46,9 @@ public:
 
   virtual void enterTableName(SQLParser::TableNameContext *ctx) = 0;
   virtual void exitTableName(SQLParser::TableNameContext *ctx) = 0;
+
+  virtual void enterIndexName(SQLParser::IndexNameContext *ctx) = 0;
+  virtual void exitIndexName(SQLParser::IndexNameContext *ctx) = 0;
 
   virtual void enterWhereClause(SQLParser::WhereClauseContext *ctx) = 0;
   virtual void exitWhereClause(SQLParser::WhereClauseContext *ctx) = 0;
@@ -49,6 +61,12 @@ public:
 
   virtual void enterOperator(SQLParser::OperatorContext *ctx) = 0;
   virtual void exitOperator(SQLParser::OperatorContext *ctx) = 0;
+
+  virtual void enterTableValues(SQLParser::TableValuesContext *ctx) = 0;
+  virtual void exitTableValues(SQLParser::TableValuesContext *ctx) = 0;
+
+  virtual void enterTableValue(SQLParser::TableValueContext *ctx) = 0;
+  virtual void exitTableValue(SQLParser::TableValueContext *ctx) = 0;
 
   virtual void enterValues(SQLParser::ValuesContext *ctx) = 0;
   virtual void exitValues(SQLParser::ValuesContext *ctx) = 0;

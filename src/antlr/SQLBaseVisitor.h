@@ -19,6 +19,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCreateQuery(SQLParser::CreateQueryContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitSelectQuery(SQLParser::SelectQueryContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -35,6 +39,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCreateIndex(SQLParser::CreateIndexContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitInsertColumns(SQLParser::InsertColumnsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitColumns(SQLParser::ColumnsContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -44,6 +56,10 @@ public:
   }
 
   virtual std::any visitTableName(SQLParser::TableNameContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitIndexName(SQLParser::IndexNameContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -60,6 +76,14 @@ public:
   }
 
   virtual std::any visitOperator(SQLParser::OperatorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTableValues(SQLParser::TableValuesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitTableValue(SQLParser::TableValueContext *ctx) override {
     return visitChildren(ctx);
   }
 
