@@ -1,4 +1,3 @@
-
 #include "Page.h"
 
 Page::Page()
@@ -26,7 +25,7 @@ bool Page::insertRecord(const std::vector<char> &record, uint64_t offset)
     memcpy(data + recordOffset, record.data(), recordSize);
 
     slotDirectory.push_back(recordOffset);
-
+    dirty = true;
     return true;
 }
 
@@ -53,6 +52,7 @@ bool Page::deleteRecord(int slotIndex)
         return false;
     }
 
+    dirty = true;
     slotDirectory[slotIndex] = -1;
     return true;
 }
@@ -61,4 +61,5 @@ void Page::loadFromFile(const char *fileData)
 {
     memcpy(&header, fileData, sizeof(PageHeader));
     memcpy(data, fileData + sizeof(header), PAGE_SIZE - sizeof(PageHeader));
+    dirty = false;
 }

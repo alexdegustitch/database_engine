@@ -22,9 +22,13 @@ public:
     bool deleteRecord(int slotIndex);
     char *getData() { return data; };
     void loadFromFile(const char *diskData);
+    void markDirty() { dirty = true; };
+    void clearDirty() { dirty = false; };
+    bool isDirty() { return dirty; };
 
 private:
     PageHeader header;
+    bool dirty = false;
     std::vector<uint64_t> slotDirectory;
     char data[PAGE_SIZE - sizeof(PageHeader)];
 };
