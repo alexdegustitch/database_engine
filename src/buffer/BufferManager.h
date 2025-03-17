@@ -9,16 +9,17 @@ class BufferManager
 {
 public:
     BufferManager();
-    Page *fetchPage(std::string tableName, int id);
+    Page *fetchPage(std::string &tableName, int id);
     void unpinPage(int id);
-    void flushPage(std::string tableName, int id);
+    void flushPage(std::string &tableName, int id);
     void flashAllPages();
 
 private:
     BufferPool pool;
     std::unordered_map<std::string, std::fstream> openFiles;
+    std::unordered_map<int, std::string> pageToTable;
 
-    std::fstream &openFile(std::string tableName);
+    std::fstream &getFile(std::string tableName);
 
     void readPageFromFile(std::string tableName, int id, Page *p);
     void writePageToFile(std::string tableName, int id, Page *p);
