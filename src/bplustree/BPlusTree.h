@@ -508,7 +508,7 @@ private:
     }
 
 public:
-    BPlusTree(const std::string &filePath, int maxKeys = 0) : maxKeys(maxKeys)
+    BPlusTree(const std::string &filePath, int maxKeys = 3) : maxKeys(maxKeys)
     {
         file.open(filePath, std::ios::in | std::ios::out | std::ios::binary);
         if (!file)
@@ -559,20 +559,38 @@ public:
         return maxKeys;
     }
 
-    bool search(int key)
+    std::vector<std::pair<uint64_t, uint64_t>> search(int key)
     {
         std::cout << "Search method" << std::endl;
         LeafNode *leaf = findLeaf(key);
-        return std::find(leaf->keys.begin(), leaf->keys.end(), key) != leaf->keys.end();
+
+        std::vector<std::pair<uint64_t, uint64_t>> res;
+        int idx = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), key) - leaf->keys.begin();
+        while (idx < leaf->keys.size() && leaf->keys[idx] == key)
+        {
+            res.push_back(leaf->dataReference[idx]);
+            ++idx;
+            if (idx == leaf->keys.size())
+            {
+                leaf = static_cast<LeafNode *>(IndexManager::readNode(file, leaf->next, maxKeys));
+                if (leaf == 0)
+                {
+                    break;
+                }
+                idx = 0;
+            }
+        }
+
+        return res;
     }
 
-    void insert(int key)
+    void insert(int key, uint64_t pageId, uint64_t slotIdx)
     {
         std::cout << "Insert method" << std::endl;
         LeafNode *leaf = findLeaf(key);
         auto it = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), key);
         leaf->keys.insert(it, key);
-        leaf->dataReference.push_back({key, key});
+        leaf->dataReference.push_back({pageId, slotIdx});
         IndexManager::writeNode(file, leaf->offset, leaf, maxKeys);
         if (leaf->keys.size() > maxKeys)
         {
@@ -580,7 +598,7 @@ public:
         }
     }
 
-    void delete_key(int key)
+    int deleteKey(int key)
     {
         std::cout << "DeleteKey method" << std::endl;
         LeafNode *leaf = findLeaf(key);
@@ -589,7 +607,7 @@ public:
         if (it == leaf->keys.end())
         {
             std::cout << "Key not found" << std::endl;
-            return;
+            return 0;
         }
         int idx = it - leaf->keys.begin();
         Node *parent = IndexManager::readNode(file, leaf->parent, maxKeys);
@@ -624,16 +642,19 @@ public:
         {
             handleUnderflow(leaf->offset);
         }
-        delete_key(key);
+        int numDeleted = 1;
+        numDeleted += deleteKey(key);
+        return numDeleted;
     }
 
-    void deleteRangeOfKeys(int keyStart, int keyEnd)
+    int deleteRangeOfKeys(int keyStart, int keyEnd)
     {
         std::cout << "DeleteRangeOfKeys method" << std::endl;
 
         int nextKey = keyStart;
         int currKey;
         bool nextLess = true;
+        int numDeleted = 0;
         while (nextLess)
         {
             currKey = nextKey;
@@ -641,13 +662,13 @@ public:
             auto it = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), currKey);
             if (it == leaf->keys.end())
             {
-                return;
+                return numDeleted;
             }
             int idx = it - leaf->keys.begin();
             currKey = leaf->keys[idx];
             if (currKey > keyEnd)
             {
-                return;
+                return numDeleted;
             }
             if (idx + 1 < leaf->keys.size())
             {
@@ -675,7 +696,7 @@ public:
 
             leaf->keys.erase(it);
             leaf->dataReference.erase(leaf->dataReference.begin() + idx);
-
+            numDeleted++;
             IndexManager::writeNode(file, leaf->offset, leaf, maxKeys);
             if (parent != nullptr)
             {
@@ -687,6 +708,7 @@ public:
             }
             // delete_key(key);
         }
+        return numDeleted;
     }
 
     void printLeaves()
@@ -706,6 +728,29 @@ public:
             curr = IndexManager::readNode(file, static_cast<LeafNode *>(curr)->next, maxKeys);
         }
         std::cout << "]" << std::endl;
+    }
+
+    std::vector<std::pair<uint64_t, uint64_t>> getAllLeaves()
+    {
+        Node *curr = IndexManager::readNode(file, rootOffset, maxKeys);
+        while (!curr->isLeaf)
+        {
+            curr = IndexManager::readNode(file, static_cast<InternalNode *>(curr)->children.front(), maxKeys);
+        }
+        // std::cout << "[ ";
+        std::vector<std::pair<uint64_t, uint64_t>> res;
+        LeafNode *leafNode = static_cast<LeafNode *>(curr);
+        while (leafNode != 0)
+        {
+            for (auto p : leafNode->dataReference)
+            {
+                // std::cout << key << " ";
+                res.push_back(p);
+            }
+            leafNode = static_cast<LeafNode *>(IndexManager::readNode(file, leafNode->next, maxKeys));
+        }
+        // std::cout << "]" << std::endl;
+        return res;
     }
 
     void eraseTree()

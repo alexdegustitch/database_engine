@@ -75,6 +75,22 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitOrCondition(SQLParser::OrConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAndCondition(SQLParser::AndConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBaseCondition(SQLParser::BaseConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitColumnValueCondition(SQLParser::ColumnValueConditionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitOperator(SQLParser::OperatorContext *ctx) override {
     return visitChildren(ctx);
   }

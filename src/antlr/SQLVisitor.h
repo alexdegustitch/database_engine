@@ -49,6 +49,14 @@ public:
 
     virtual std::any visitCondition(SQLParser::ConditionContext *context) = 0;
 
+    virtual std::any visitOrCondition(SQLParser::OrConditionContext *context) = 0;
+
+    virtual std::any visitAndCondition(SQLParser::AndConditionContext *context) = 0;
+
+    virtual std::any visitBaseCondition(SQLParser::BaseConditionContext *context) = 0;
+
+    virtual std::any visitColumnValueCondition(SQLParser::ColumnValueConditionContext *context) = 0;
+
     virtual std::any visitOperator(SQLParser::OperatorContext *context) = 0;
 
     virtual std::any visitTableValues(SQLParser::TableValuesContext *context) = 0;

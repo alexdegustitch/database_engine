@@ -59,6 +59,18 @@ public:
   virtual void enterCondition(SQLParser::ConditionContext *ctx) = 0;
   virtual void exitCondition(SQLParser::ConditionContext *ctx) = 0;
 
+  virtual void enterOrCondition(SQLParser::OrConditionContext *ctx) = 0;
+  virtual void exitOrCondition(SQLParser::OrConditionContext *ctx) = 0;
+
+  virtual void enterAndCondition(SQLParser::AndConditionContext *ctx) = 0;
+  virtual void exitAndCondition(SQLParser::AndConditionContext *ctx) = 0;
+
+  virtual void enterBaseCondition(SQLParser::BaseConditionContext *ctx) = 0;
+  virtual void exitBaseCondition(SQLParser::BaseConditionContext *ctx) = 0;
+
+  virtual void enterColumnValueCondition(SQLParser::ColumnValueConditionContext *ctx) = 0;
+  virtual void exitColumnValueCondition(SQLParser::ColumnValueConditionContext *ctx) = 0;
+
   virtual void enterOperator(SQLParser::OperatorContext *ctx) = 0;
   virtual void exitOperator(SQLParser::OperatorContext *ctx) = 0;
 

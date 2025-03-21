@@ -15,16 +15,19 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, TYPE = 26, 
-    ID = 27, STRING = 28, NUMBER = 29, WS = 30
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, AND = 26, 
+    OR = 27, TYPE = 28, VARCHAR = 29, ID = 30, STRING = 31, NUMBER = 32, 
+    WS = 33
   };
 
   enum {
     RuleQuery = 0, RuleCreateQuery = 1, RuleSelectQuery = 2, RuleInsertQuery = 3, 
     RuleDeleteQuery = 4, RuleUpdateQuery = 5, RuleCreateIndex = 6, RuleInsertColumns = 7, 
     RuleColumns = 8, RuleColumn = 9, RuleTableName = 10, RuleIndexName = 11, 
-    RuleWhereClause = 12, RuleOrderByClause = 13, RuleCondition = 14, RuleOperator = 15, 
-    RuleTableValues = 16, RuleTableValue = 17, RuleValues = 18, RuleValue = 19
+    RuleWhereClause = 12, RuleOrderByClause = 13, RuleCondition = 14, RuleOrCondition = 15, 
+    RuleAndCondition = 16, RuleBaseCondition = 17, RuleColumnValueCondition = 18, 
+    RuleOperator = 19, RuleTableValues = 20, RuleTableValue = 21, RuleValues = 22, 
+    RuleValue = 23
   };
 
   explicit SQLParser(antlr4::TokenStream *input);
@@ -59,6 +62,10 @@ public:
   class WhereClauseContext;
   class OrderByClauseContext;
   class ConditionContext;
+  class OrConditionContext;
+  class AndConditionContext;
+  class BaseConditionContext;
+  class ColumnValueConditionContext;
   class OperatorContext;
   class TableValuesContext;
   class TableValueContext;
@@ -298,6 +305,73 @@ public:
   public:
     ConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    OrConditionContext *orCondition();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ConditionContext* condition();
+
+  class  OrConditionContext : public antlr4::ParserRuleContext {
+  public:
+    OrConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<AndConditionContext *> andCondition();
+    AndConditionContext* andCondition(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> OR();
+    antlr4::tree::TerminalNode* OR(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  OrConditionContext* orCondition();
+
+  class  AndConditionContext : public antlr4::ParserRuleContext {
+  public:
+    AndConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<BaseConditionContext *> baseCondition();
+    BaseConditionContext* baseCondition(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> AND();
+    antlr4::tree::TerminalNode* AND(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AndConditionContext* andCondition();
+
+  class  BaseConditionContext : public antlr4::ParserRuleContext {
+  public:
+    BaseConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ConditionContext *condition();
+    ColumnValueConditionContext *columnValueCondition();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  BaseConditionContext* baseCondition();
+
+  class  ColumnValueConditionContext : public antlr4::ParserRuleContext {
+  public:
+    ColumnValueConditionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     ColumnContext *column();
     OperatorContext *operator_();
     ValueContext *value();
@@ -309,7 +383,7 @@ public:
    
   };
 
-  ConditionContext* condition();
+  ColumnValueConditionContext* columnValueCondition();
 
   class  OperatorContext : public antlr4::ParserRuleContext {
   public:

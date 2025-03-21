@@ -33,8 +33,8 @@ private:
 public:
     SystemTableManager(const std::string &tablesFile, const std::string &columnsFile);
     void createSystemTables();
-    int insertTableSchema(const std::string &tableName, std::vector<ColumnSchema> &cols);
-    TableSchema getTableSchema(const std::string &tableName, std::vector<ColumnSchema> &cols);
+    int insertTableSchema(const std::string &tableName, std::vector<ColumnSchema *> &cols);
+    TableSchema *getTableSchema(const std::string &tableName, std::vector<ColumnSchema *> &cols);
 };
 
 #endif

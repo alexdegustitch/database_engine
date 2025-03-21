@@ -61,6 +61,18 @@ public:
   virtual void enterCondition(SQLParser::ConditionContext * /*ctx*/) override { }
   virtual void exitCondition(SQLParser::ConditionContext * /*ctx*/) override { }
 
+  virtual void enterOrCondition(SQLParser::OrConditionContext * /*ctx*/) override { }
+  virtual void exitOrCondition(SQLParser::OrConditionContext * /*ctx*/) override { }
+
+  virtual void enterAndCondition(SQLParser::AndConditionContext * /*ctx*/) override { }
+  virtual void exitAndCondition(SQLParser::AndConditionContext * /*ctx*/) override { }
+
+  virtual void enterBaseCondition(SQLParser::BaseConditionContext * /*ctx*/) override { }
+  virtual void exitBaseCondition(SQLParser::BaseConditionContext * /*ctx*/) override { }
+
+  virtual void enterColumnValueCondition(SQLParser::ColumnValueConditionContext * /*ctx*/) override { }
+  virtual void exitColumnValueCondition(SQLParser::ColumnValueConditionContext * /*ctx*/) override { }
+
   virtual void enterOperator(SQLParser::OperatorContext * /*ctx*/) override { }
   virtual void exitOperator(SQLParser::OperatorContext * /*ctx*/) override { }
 
