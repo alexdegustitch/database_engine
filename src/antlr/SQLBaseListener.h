@@ -82,11 +82,17 @@ public:
   virtual void enterTableValue(SQLParser::TableValueContext * /*ctx*/) override { }
   virtual void exitTableValue(SQLParser::TableValueContext * /*ctx*/) override { }
 
+  virtual void enterColumnConstraint(SQLParser::ColumnConstraintContext * /*ctx*/) override { }
+  virtual void exitColumnConstraint(SQLParser::ColumnConstraintContext * /*ctx*/) override { }
+
   virtual void enterValues(SQLParser::ValuesContext * /*ctx*/) override { }
   virtual void exitValues(SQLParser::ValuesContext * /*ctx*/) override { }
 
   virtual void enterValue(SQLParser::ValueContext * /*ctx*/) override { }
   virtual void exitValue(SQLParser::ValueContext * /*ctx*/) override { }
+
+  virtual void enterDataType(SQLParser::DataTypeContext * /*ctx*/) override { }
+  virtual void exitDataType(SQLParser::DataTypeContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

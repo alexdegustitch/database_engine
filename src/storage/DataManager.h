@@ -1,9 +1,9 @@
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 
-#include "IndexHandler.h"
-#include "BufferManager.h"
-#include "SystemTableManager.h"
+#include "../index/IndexHandler.h"
+#include "../buffer/BufferManager.h"
+#include "../catalog/SystemTableManager.h"
 
 class DataManager
 {
@@ -16,7 +16,7 @@ public:
 
 private:
     IndexHandler *indexHandler;
-    SystemTableManager *systemTableManager;
+    SystemTableManager &systemTableManager = SystemTableManager::getInstance();
     BufferManager *bufferManager;
 };
 #endif

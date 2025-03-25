@@ -9,7 +9,7 @@
 class ConditionTree
 {
 public:
-    ConditionTree(ConditionNode *root) {}
+    ConditionTree(ConditionNode *root);
     bool evaluateRecord(Record *);
 
 private:

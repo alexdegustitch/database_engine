@@ -24,7 +24,7 @@ Page *BufferPool::getPage(int id)
     return nullptr;
 }
 
-void BufferPool::addPage(int id, std::string &tableName, Page *page)
+void BufferPool::addPage(int id, const std::string &tableName, Page *page)
 {
     PageFrame *pFrame = new PageFrame();
     pFrame->page = page;
@@ -83,7 +83,7 @@ void BufferPool::flushAllPages()
     */
 }
 
-void BufferPool::evictPage(std::string &tableName)
+void BufferPool::evictPage(const std::string &tableName)
 {
     while (buffer[clock]->used)
     {
@@ -93,7 +93,8 @@ void BufferPool::evictPage(std::string &tableName)
 
     if (flushCallback)
     {
-        flushCallback(tableName, buffer[clock]->pageId);
+        std::string name = tableName;
+        flushCallback(name, buffer[clock]->pageId);
     }
 
     map.erase(buffer[clock]->pageId);
@@ -103,7 +104,7 @@ void BufferPool::evictPage(std::string &tableName)
     buffer.erase(buffer.begin() + clock);
 }
 
-void BufferPool::prefetchPages(int startPage, std::string &tableName, int cnt)
+void BufferPool::prefetchPages(int startPage, const std::string &tableName, int cnt)
 {
     for (int i = 0; i < cnt; ++i)
     {
@@ -112,7 +113,8 @@ void BufferPool::prefetchPages(int startPage, std::string &tableName, int cnt)
         {
             if (fetchPageCallback)
             {
-                addPage(pageToGet, tableName, fetchPageCallback(tableName, pageToGet));
+                std::string name = tableName;
+                addPage(pageToGet, tableName, fetchPageCallback(name, pageToGet));
             }
         }
     }

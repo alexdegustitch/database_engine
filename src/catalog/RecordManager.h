@@ -2,17 +2,21 @@
 #define RECORD_MANAGER_H
 
 #include "SystemTableManager.h"
-#include "BufferManager.h"
-#include "IndexHandler.h"
-
+#include "../buffer/BufferManager.h"
+#include "../index/IndexHandler.h"
+#include "../utils/TypeConverter.h"
 class RecordManager
 {
 public:
     RecordManager();
-    void readRecords(int pageId, uint64_t offseet, std::string &tableName, std::vector<std::string> &cols);
+    static RecordManager &getInstance();
+    void readRecord(int pageId, uint64_t offseet, std::string &tableName, std::vector<std::string> &cols);
+
+    void deserializeData(char *data, std::vector<ColumnSchema> &cols, std::unordered_map<std::string, std::string> &values);
+    std::unordered_map<int, DataType> serializeData(std::vector<std::string> &colNames, std::vector<std::string> &colVals, std::vector<ColumnSchema> &schemas, std::vector<char> &row);
 
 private:
-    SystemTableManager *tableManager;
+    SystemTableManager &tableManager = SystemTableManager::getInstance();
     BufferManager *bufferManager;
     IndexHandler *indexHandler;
 };

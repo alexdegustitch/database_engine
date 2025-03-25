@@ -4,12 +4,13 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include "BPlusTree.h"
+#include "../bplustree/BPlusTree.h"
 
 class IndexHandler
 {
 public:
     IndexHandler();
+    static IndexHandler &getInstance();
     void loadIndex(std::string fileName, int maxKeys);
     void insertIntoIndex(std::string file, int key, uint64_t pageId, uint64_t slotIdx);
     int deleteFromIndex(std::string file, int key);

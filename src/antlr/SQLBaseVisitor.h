@@ -103,11 +103,19 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitColumnConstraint(SQLParser::ColumnConstraintContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitValues(SQLParser::ValuesContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual std::any visitValue(SQLParser::ValueContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDataType(SQLParser::DataTypeContext *ctx) override {
     return visitChildren(ctx);
   }
 

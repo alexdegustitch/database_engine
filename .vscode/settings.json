@@ -69,6 +69,10 @@
     "text_encoding": "cpp",
     "thread": "cpp",
     "map": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "set": "cpp",
+    "unordered_set": "cpp"
   }
 }

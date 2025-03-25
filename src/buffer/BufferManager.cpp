@@ -4,16 +4,22 @@ BufferManager::BufferManager()
 {
     pool.setFlushCallback([this](std::string &tableName, int id)
                           {
-        std::string tableName = pageToTable[id];
+        tableName = pageToTable[id];
         this->flushPage(tableName, id); });
 
     pool.setFetchPageCallback([this](std::string &tableName, int id)
                               {
-        std::string tableName = pageToTable[id];
+        tableName = pageToTable[id];
         return this->fetchPage(tableName, id); });
 }
 
-Page *BufferManager::fetchPage(std::string &tableName, int id)
+BufferManager &BufferManager::getInstance()
+{
+    static BufferManager instance;
+    return instance;
+}
+
+Page *BufferManager::fetchPage(const std::string &tableName, int id)
 {
     Page *p = pool.getPage(id);
     if (p == nullptr)
@@ -30,7 +36,7 @@ void BufferManager::unpinPage(int id)
     pool.releasePage(id);
 }
 
-void BufferManager::flushPage(std::string &tableName, int id)
+void BufferManager::flushPage(const std::string &tableName, int id)
 {
 
     Page *page = pool.getPage(id);
@@ -68,7 +74,7 @@ std::fstream &BufferManager::getFile(std::string tableName)
     return openFiles[tableName];
 }
 
-void BufferManager::readPageFromFile(std::string tableName, int id, Page *p)
+void BufferManager::readPageFromFile(const std::string &tableName, int id, Page *p)
 {
     std::fstream &file = getFile(tableName);
     if (!file)
@@ -79,7 +85,7 @@ void BufferManager::readPageFromFile(std::string tableName, int id, Page *p)
     file.read(p->getData(), PAGE_SIZE);
 }
 
-void BufferManager::writePageToFile(std::string tableName, int id, Page *p)
+void BufferManager::writePageToFile(const std::string &tableName, int id, Page *p)
 {
     std::fstream &file = getFile(tableName);
     file.seekp(id * PAGE_SIZE);

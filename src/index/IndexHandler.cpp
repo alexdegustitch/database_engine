@@ -4,6 +4,11 @@ IndexHandler::IndexHandler()
 {
 }
 
+IndexHandler &IndexHandler::getInstance()
+{
+    static IndexHandler instance;
+    return instance;
+}
 void IndexHandler::loadIndex(std::string fileName, int maxKeys)
 {
     if (fileToIndex.find(fileName) == fileToIndex.end())
@@ -27,7 +32,7 @@ int IndexHandler::deleteFromIndex(std::string file, int key)
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return;
+        return -1;
     }
     return fileToIndex[file]->deleteKey(key);
 }
@@ -37,7 +42,7 @@ int IndexHandler::deleteRangeFromIndex(std::string file, int keyStart, int keyEn
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return;
+        return -1;
     }
     return fileToIndex[file]->deleteRangeOfKeys(keyStart, keyEnd);
 }
@@ -47,7 +52,7 @@ std::vector<std::pair<uint64_t, uint64_t>> IndexHandler::searchFromIndex(std::st
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return;
+        return std::vector<std::pair<uint64_t, uint64_t>>{};
     }
     return fileToIndex[file]->search(key);
 }
@@ -57,7 +62,7 @@ std::vector<std::pair<uint64_t, uint64_t>> IndexHandler::getAllFromIndex(std::st
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return;
+        return std::vector<std::pair<uint64_t, uint64_t>>{};
     }
     fileToIndex[file]->getAllLeaves();
 }

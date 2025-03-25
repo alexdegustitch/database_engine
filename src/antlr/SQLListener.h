@@ -80,11 +80,17 @@ public:
   virtual void enterTableValue(SQLParser::TableValueContext *ctx) = 0;
   virtual void exitTableValue(SQLParser::TableValueContext *ctx) = 0;
 
+  virtual void enterColumnConstraint(SQLParser::ColumnConstraintContext *ctx) = 0;
+  virtual void exitColumnConstraint(SQLParser::ColumnConstraintContext *ctx) = 0;
+
   virtual void enterValues(SQLParser::ValuesContext *ctx) = 0;
   virtual void exitValues(SQLParser::ValuesContext *ctx) = 0;
 
   virtual void enterValue(SQLParser::ValueContext *ctx) = 0;
   virtual void exitValue(SQLParser::ValueContext *ctx) = 0;
+
+  virtual void enterDataType(SQLParser::DataTypeContext *ctx) = 0;
+  virtual void exitDataType(SQLParser::DataTypeContext *ctx) = 0;
 
 
 };

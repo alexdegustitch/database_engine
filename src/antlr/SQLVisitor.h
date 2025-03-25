@@ -63,9 +63,13 @@ public:
 
     virtual std::any visitTableValue(SQLParser::TableValueContext *context) = 0;
 
+    virtual std::any visitColumnConstraint(SQLParser::ColumnConstraintContext *context) = 0;
+
     virtual std::any visitValues(SQLParser::ValuesContext *context) = 0;
 
     virtual std::any visitValue(SQLParser::ValueContext *context) = 0;
+
+    virtual std::any visitDataType(SQLParser::DataTypeContext *context) = 0;
 
 
 };

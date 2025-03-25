@@ -57,82 +57,93 @@ void sqlParserInitialize() {
       "updateQuery", "createIndex", "insertColumns", "columns", "column", 
       "tableName", "indexName", "whereClause", "orderByClause", "condition", 
       "orCondition", "andCondition", "baseCondition", "columnValueCondition", 
-      "operator", "tableValues", "tableValue", "values", "value"
+      "operator", "tableValues", "tableValue", "columnConstraint", "values", 
+      "value", "dataType"
     },
     std::vector<std::string>{
       "", "'CREATE TABLE'", "'('", "')'", "';'", "'SELECT'", "'FROM'", "'INSERT INTO'", 
       "'VALUES'", "'DELETE FROM'", "'UPDATE'", "'SET'", "'='", "'CREATE INDEX'", 
       "'ON'", "','", "'*'", "'WHERE'", "'ORDER BY'", "'ASC'", "'DESC'", 
-      "'>'", "'<'", "'>='", "'<='", "'<>'", "'AND'", "'OR'"
+      "'>'", "'<'", "'>='", "'<='", "'<>'", "'PRIMARY'", "'KEY'", "'NOT'", 
+      "'NULL'", "'INT'", "'TEXT'", "'VARCHAR'", "'CHAR'", "'AND'", "'OR'"
     },
     std::vector<std::string>{
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
-      "", "", "", "", "", "", "", "", "", "AND", "OR", "TYPE", "VARCHAR", 
-      "ID", "STRING", "NUMBER", "WS"
+      "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
+      "AND", "OR", "ID", "STRING", "NUMBER", "WS"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,33,202,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,39,229,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,
-  	21,2,22,7,22,2,23,7,23,1,0,1,0,1,0,1,0,1,0,1,0,3,0,55,8,0,1,1,1,1,1,1,
-  	1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,3,2,69,8,2,1,2,3,2,72,8,2,1,2,1,2,
-  	1,3,1,3,1,3,1,3,1,3,1,3,3,3,82,8,3,1,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,
-  	4,3,4,93,8,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,104,8,5,1,5,1,5,
-  	1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,7,1,7,1,7,5,7,120,8,7,10,7,12,7,
-  	123,9,7,1,8,1,8,1,8,1,8,5,8,129,8,8,10,8,12,8,132,9,8,3,8,134,8,8,1,9,
-  	1,9,1,10,1,10,1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,13,3,13,148,8,13,1,
-  	14,1,14,1,15,1,15,1,15,5,15,155,8,15,10,15,12,15,158,9,15,1,16,1,16,1,
-  	16,5,16,163,8,16,10,16,12,16,166,9,16,1,17,1,17,1,17,1,17,1,17,3,17,173,
-  	8,17,1,18,1,18,1,18,1,18,1,19,1,19,1,20,1,20,1,20,5,20,184,8,20,10,20,
-  	12,20,187,9,20,1,21,1,21,1,21,1,22,1,22,1,22,5,22,195,8,22,10,22,12,22,
-  	198,9,22,1,23,1,23,1,23,0,0,24,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,
-  	30,32,34,36,38,40,42,44,46,0,3,1,0,19,20,2,0,12,12,21,25,1,0,30,32,196,
-  	0,54,1,0,0,0,2,56,1,0,0,0,4,63,1,0,0,0,6,75,1,0,0,0,8,89,1,0,0,0,10,96,
-  	1,0,0,0,12,107,1,0,0,0,14,116,1,0,0,0,16,133,1,0,0,0,18,135,1,0,0,0,20,
-  	137,1,0,0,0,22,139,1,0,0,0,24,141,1,0,0,0,26,144,1,0,0,0,28,149,1,0,0,
-  	0,30,151,1,0,0,0,32,159,1,0,0,0,34,172,1,0,0,0,36,174,1,0,0,0,38,178,
-  	1,0,0,0,40,180,1,0,0,0,42,188,1,0,0,0,44,191,1,0,0,0,46,199,1,0,0,0,48,
-  	55,3,2,1,0,49,55,3,4,2,0,50,55,3,6,3,0,51,55,3,8,4,0,52,55,3,10,5,0,53,
-  	55,3,12,6,0,54,48,1,0,0,0,54,49,1,0,0,0,54,50,1,0,0,0,54,51,1,0,0,0,54,
-  	52,1,0,0,0,54,53,1,0,0,0,55,1,1,0,0,0,56,57,5,1,0,0,57,58,3,20,10,0,58,
-  	59,5,2,0,0,59,60,3,40,20,0,60,61,5,3,0,0,61,62,5,4,0,0,62,3,1,0,0,0,63,
-  	64,5,5,0,0,64,65,3,16,8,0,65,66,5,6,0,0,66,68,3,20,10,0,67,69,3,24,12,
-  	0,68,67,1,0,0,0,68,69,1,0,0,0,69,71,1,0,0,0,70,72,3,26,13,0,71,70,1,0,
-  	0,0,71,72,1,0,0,0,72,73,1,0,0,0,73,74,5,4,0,0,74,5,1,0,0,0,75,76,5,7,
-  	0,0,76,81,3,20,10,0,77,78,5,2,0,0,78,79,3,14,7,0,79,80,5,3,0,0,80,82,
-  	1,0,0,0,81,77,1,0,0,0,81,82,1,0,0,0,82,83,1,0,0,0,83,84,5,8,0,0,84,85,
-  	5,2,0,0,85,86,3,44,22,0,86,87,5,3,0,0,87,88,5,4,0,0,88,7,1,0,0,0,89,90,
-  	5,9,0,0,90,92,3,20,10,0,91,93,3,24,12,0,92,91,1,0,0,0,92,93,1,0,0,0,93,
-  	94,1,0,0,0,94,95,5,4,0,0,95,9,1,0,0,0,96,97,5,10,0,0,97,98,3,20,10,0,
-  	98,99,5,11,0,0,99,100,3,18,9,0,100,101,5,12,0,0,101,103,3,46,23,0,102,
-  	104,3,24,12,0,103,102,1,0,0,0,103,104,1,0,0,0,104,105,1,0,0,0,105,106,
-  	5,4,0,0,106,11,1,0,0,0,107,108,5,13,0,0,108,109,3,22,11,0,109,110,5,14,
-  	0,0,110,111,3,20,10,0,111,112,5,2,0,0,112,113,3,18,9,0,113,114,5,3,0,
-  	0,114,115,5,4,0,0,115,13,1,0,0,0,116,121,3,18,9,0,117,118,5,15,0,0,118,
-  	120,3,18,9,0,119,117,1,0,0,0,120,123,1,0,0,0,121,119,1,0,0,0,121,122,
-  	1,0,0,0,122,15,1,0,0,0,123,121,1,0,0,0,124,134,5,16,0,0,125,130,3,18,
-  	9,0,126,127,5,15,0,0,127,129,3,18,9,0,128,126,1,0,0,0,129,132,1,0,0,0,
-  	130,128,1,0,0,0,130,131,1,0,0,0,131,134,1,0,0,0,132,130,1,0,0,0,133,124,
-  	1,0,0,0,133,125,1,0,0,0,134,17,1,0,0,0,135,136,5,30,0,0,136,19,1,0,0,
-  	0,137,138,5,30,0,0,138,21,1,0,0,0,139,140,5,30,0,0,140,23,1,0,0,0,141,
-  	142,5,17,0,0,142,143,3,28,14,0,143,25,1,0,0,0,144,145,5,18,0,0,145,147,
-  	3,18,9,0,146,148,7,0,0,0,147,146,1,0,0,0,147,148,1,0,0,0,148,27,1,0,0,
-  	0,149,150,3,30,15,0,150,29,1,0,0,0,151,156,3,32,16,0,152,153,5,27,0,0,
-  	153,155,3,32,16,0,154,152,1,0,0,0,155,158,1,0,0,0,156,154,1,0,0,0,156,
-  	157,1,0,0,0,157,31,1,0,0,0,158,156,1,0,0,0,159,164,3,34,17,0,160,161,
-  	5,26,0,0,161,163,3,34,17,0,162,160,1,0,0,0,163,166,1,0,0,0,164,162,1,
-  	0,0,0,164,165,1,0,0,0,165,33,1,0,0,0,166,164,1,0,0,0,167,168,5,2,0,0,
-  	168,169,3,28,14,0,169,170,5,3,0,0,170,173,1,0,0,0,171,173,3,36,18,0,172,
-  	167,1,0,0,0,172,171,1,0,0,0,173,35,1,0,0,0,174,175,3,18,9,0,175,176,3,
-  	38,19,0,176,177,3,46,23,0,177,37,1,0,0,0,178,179,7,1,0,0,179,39,1,0,0,
-  	0,180,185,3,42,21,0,181,182,5,15,0,0,182,184,3,42,21,0,183,181,1,0,0,
-  	0,184,187,1,0,0,0,185,183,1,0,0,0,185,186,1,0,0,0,186,41,1,0,0,0,187,
-  	185,1,0,0,0,188,189,3,46,23,0,189,190,5,28,0,0,190,43,1,0,0,0,191,196,
-  	3,46,23,0,192,193,5,15,0,0,193,195,3,46,23,0,194,192,1,0,0,0,195,198,
-  	1,0,0,0,196,194,1,0,0,0,196,197,1,0,0,0,197,45,1,0,0,0,198,196,1,0,0,
-  	0,199,200,7,2,0,0,200,47,1,0,0,0,15,54,68,71,81,92,103,121,130,133,147,
-  	156,164,172,185,196
+  	21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,1,0,1,0,1,0,1,0,1,0,1,0,3,
+  	0,59,8,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,3,2,73,8,2,1,
+  	2,3,2,76,8,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,3,3,86,8,3,1,3,1,3,1,3,1,
+  	3,1,3,1,3,1,4,1,4,1,4,3,4,97,8,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
+  	3,5,108,8,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,7,1,7,1,7,5,
+  	7,124,8,7,10,7,12,7,127,9,7,1,8,1,8,1,8,1,8,5,8,133,8,8,10,8,12,8,136,
+  	9,8,3,8,138,8,8,1,9,1,9,1,10,1,10,1,11,1,11,1,12,1,12,1,12,1,13,1,13,
+  	1,13,3,13,152,8,13,1,14,1,14,1,15,1,15,1,15,5,15,159,8,15,10,15,12,15,
+  	162,9,15,1,16,1,16,1,16,5,16,167,8,16,10,16,12,16,170,9,16,1,17,1,17,
+  	1,17,1,17,1,17,3,17,177,8,17,1,18,1,18,1,18,1,18,1,19,1,19,1,20,1,20,
+  	1,20,5,20,188,8,20,10,20,12,20,191,9,20,1,21,1,21,1,21,5,21,196,8,21,
+  	10,21,12,21,199,9,21,1,22,1,22,1,22,1,22,3,22,205,8,22,1,23,1,23,1,23,
+  	5,23,210,8,23,10,23,12,23,213,9,23,1,24,1,24,1,25,1,25,1,25,1,25,1,25,
+  	1,25,1,25,1,25,1,25,1,25,3,25,227,8,25,1,25,0,0,26,0,2,4,6,8,10,12,14,
+  	16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,0,3,1,0,19,20,2,
+  	0,12,12,21,25,1,0,36,38,226,0,58,1,0,0,0,2,60,1,0,0,0,4,67,1,0,0,0,6,
+  	79,1,0,0,0,8,93,1,0,0,0,10,100,1,0,0,0,12,111,1,0,0,0,14,120,1,0,0,0,
+  	16,137,1,0,0,0,18,139,1,0,0,0,20,141,1,0,0,0,22,143,1,0,0,0,24,145,1,
+  	0,0,0,26,148,1,0,0,0,28,153,1,0,0,0,30,155,1,0,0,0,32,163,1,0,0,0,34,
+  	176,1,0,0,0,36,178,1,0,0,0,38,182,1,0,0,0,40,184,1,0,0,0,42,192,1,0,0,
+  	0,44,204,1,0,0,0,46,206,1,0,0,0,48,214,1,0,0,0,50,226,1,0,0,0,52,59,3,
+  	2,1,0,53,59,3,4,2,0,54,59,3,6,3,0,55,59,3,8,4,0,56,59,3,10,5,0,57,59,
+  	3,12,6,0,58,52,1,0,0,0,58,53,1,0,0,0,58,54,1,0,0,0,58,55,1,0,0,0,58,56,
+  	1,0,0,0,58,57,1,0,0,0,59,1,1,0,0,0,60,61,5,1,0,0,61,62,3,20,10,0,62,63,
+  	5,2,0,0,63,64,3,40,20,0,64,65,5,3,0,0,65,66,5,4,0,0,66,3,1,0,0,0,67,68,
+  	5,5,0,0,68,69,3,16,8,0,69,70,5,6,0,0,70,72,3,20,10,0,71,73,3,24,12,0,
+  	72,71,1,0,0,0,72,73,1,0,0,0,73,75,1,0,0,0,74,76,3,26,13,0,75,74,1,0,0,
+  	0,75,76,1,0,0,0,76,77,1,0,0,0,77,78,5,4,0,0,78,5,1,0,0,0,79,80,5,7,0,
+  	0,80,85,3,20,10,0,81,82,5,2,0,0,82,83,3,14,7,0,83,84,5,3,0,0,84,86,1,
+  	0,0,0,85,81,1,0,0,0,85,86,1,0,0,0,86,87,1,0,0,0,87,88,5,8,0,0,88,89,5,
+  	2,0,0,89,90,3,46,23,0,90,91,5,3,0,0,91,92,5,4,0,0,92,7,1,0,0,0,93,94,
+  	5,9,0,0,94,96,3,20,10,0,95,97,3,24,12,0,96,95,1,0,0,0,96,97,1,0,0,0,97,
+  	98,1,0,0,0,98,99,5,4,0,0,99,9,1,0,0,0,100,101,5,10,0,0,101,102,3,20,10,
+  	0,102,103,5,11,0,0,103,104,3,18,9,0,104,105,5,12,0,0,105,107,3,48,24,
+  	0,106,108,3,24,12,0,107,106,1,0,0,0,107,108,1,0,0,0,108,109,1,0,0,0,109,
+  	110,5,4,0,0,110,11,1,0,0,0,111,112,5,13,0,0,112,113,3,22,11,0,113,114,
+  	5,14,0,0,114,115,3,20,10,0,115,116,5,2,0,0,116,117,3,18,9,0,117,118,5,
+  	3,0,0,118,119,5,4,0,0,119,13,1,0,0,0,120,125,3,18,9,0,121,122,5,15,0,
+  	0,122,124,3,18,9,0,123,121,1,0,0,0,124,127,1,0,0,0,125,123,1,0,0,0,125,
+  	126,1,0,0,0,126,15,1,0,0,0,127,125,1,0,0,0,128,138,5,16,0,0,129,134,3,
+  	18,9,0,130,131,5,15,0,0,131,133,3,18,9,0,132,130,1,0,0,0,133,136,1,0,
+  	0,0,134,132,1,0,0,0,134,135,1,0,0,0,135,138,1,0,0,0,136,134,1,0,0,0,137,
+  	128,1,0,0,0,137,129,1,0,0,0,138,17,1,0,0,0,139,140,5,36,0,0,140,19,1,
+  	0,0,0,141,142,5,36,0,0,142,21,1,0,0,0,143,144,5,36,0,0,144,23,1,0,0,0,
+  	145,146,5,17,0,0,146,147,3,28,14,0,147,25,1,0,0,0,148,149,5,18,0,0,149,
+  	151,3,18,9,0,150,152,7,0,0,0,151,150,1,0,0,0,151,152,1,0,0,0,152,27,1,
+  	0,0,0,153,154,3,30,15,0,154,29,1,0,0,0,155,160,3,32,16,0,156,157,5,35,
+  	0,0,157,159,3,32,16,0,158,156,1,0,0,0,159,162,1,0,0,0,160,158,1,0,0,0,
+  	160,161,1,0,0,0,161,31,1,0,0,0,162,160,1,0,0,0,163,168,3,34,17,0,164,
+  	165,5,34,0,0,165,167,3,34,17,0,166,164,1,0,0,0,167,170,1,0,0,0,168,166,
+  	1,0,0,0,168,169,1,0,0,0,169,33,1,0,0,0,170,168,1,0,0,0,171,172,5,2,0,
+  	0,172,173,3,28,14,0,173,174,5,3,0,0,174,177,1,0,0,0,175,177,3,36,18,0,
+  	176,171,1,0,0,0,176,175,1,0,0,0,177,35,1,0,0,0,178,179,3,18,9,0,179,180,
+  	3,38,19,0,180,181,3,48,24,0,181,37,1,0,0,0,182,183,7,1,0,0,183,39,1,0,
+  	0,0,184,189,3,42,21,0,185,186,5,15,0,0,186,188,3,42,21,0,187,185,1,0,
+  	0,0,188,191,1,0,0,0,189,187,1,0,0,0,189,190,1,0,0,0,190,41,1,0,0,0,191,
+  	189,1,0,0,0,192,193,3,48,24,0,193,197,3,50,25,0,194,196,3,44,22,0,195,
+  	194,1,0,0,0,196,199,1,0,0,0,197,195,1,0,0,0,197,198,1,0,0,0,198,43,1,
+  	0,0,0,199,197,1,0,0,0,200,201,5,26,0,0,201,205,5,27,0,0,202,203,5,28,
+  	0,0,203,205,5,29,0,0,204,200,1,0,0,0,204,202,1,0,0,0,205,45,1,0,0,0,206,
+  	211,3,48,24,0,207,208,5,15,0,0,208,210,3,48,24,0,209,207,1,0,0,0,210,
+  	213,1,0,0,0,211,209,1,0,0,0,211,212,1,0,0,0,212,47,1,0,0,0,213,211,1,
+  	0,0,0,214,215,7,2,0,0,215,49,1,0,0,0,216,227,5,30,0,0,217,227,5,31,0,
+  	0,218,219,5,32,0,0,219,220,5,2,0,0,220,221,5,38,0,0,221,227,5,3,0,0,222,
+  	223,5,33,0,0,223,224,5,2,0,0,224,225,5,38,0,0,225,227,5,3,0,0,226,216,
+  	1,0,0,0,226,217,1,0,0,0,226,218,1,0,0,0,226,222,1,0,0,0,227,51,1,0,0,
+  	0,18,58,72,75,85,96,107,125,134,137,151,160,168,176,189,197,204,211,226
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -248,47 +259,47 @@ SQLParser::QueryContext* SQLParser::query() {
     exitRule();
   });
   try {
-    setState(54);
+    setState(58);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case SQLParser::T__0: {
         enterOuterAlt(_localctx, 1);
-        setState(48);
+        setState(52);
         createQuery();
         break;
       }
 
       case SQLParser::T__4: {
         enterOuterAlt(_localctx, 2);
-        setState(49);
+        setState(53);
         selectQuery();
         break;
       }
 
       case SQLParser::T__6: {
         enterOuterAlt(_localctx, 3);
-        setState(50);
+        setState(54);
         insertQuery();
         break;
       }
 
       case SQLParser::T__8: {
         enterOuterAlt(_localctx, 4);
-        setState(51);
+        setState(55);
         deleteQuery();
         break;
       }
 
       case SQLParser::T__9: {
         enterOuterAlt(_localctx, 5);
-        setState(52);
+        setState(56);
         updateQuery();
         break;
       }
 
       case SQLParser::T__12: {
         enterOuterAlt(_localctx, 6);
-        setState(53);
+        setState(57);
         createIndex();
         break;
       }
@@ -359,17 +370,17 @@ SQLParser::CreateQueryContext* SQLParser::createQuery() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(56);
-    match(SQLParser::T__0);
-    setState(57);
-    tableName();
-    setState(58);
-    match(SQLParser::T__1);
-    setState(59);
-    tableValues();
     setState(60);
-    match(SQLParser::T__2);
+    match(SQLParser::T__0);
     setState(61);
+    tableName();
+    setState(62);
+    match(SQLParser::T__1);
+    setState(63);
+    tableValues();
+    setState(64);
+    match(SQLParser::T__2);
+    setState(65);
     match(SQLParser::T__3);
    
   }
@@ -443,31 +454,31 @@ SQLParser::SelectQueryContext* SQLParser::selectQuery() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(63);
+    setState(67);
     match(SQLParser::T__4);
-    setState(64);
-    columns();
-    setState(65);
-    match(SQLParser::T__5);
-    setState(66);
-    tableName();
     setState(68);
+    columns();
+    setState(69);
+    match(SQLParser::T__5);
+    setState(70);
+    tableName();
+    setState(72);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__16) {
-      setState(67);
+      setState(71);
       whereClause();
     }
-    setState(71);
+    setState(75);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__17) {
-      setState(70);
+      setState(74);
       orderByClause();
     }
-    setState(73);
+    setState(77);
     match(SQLParser::T__3);
    
   }
@@ -537,31 +548,31 @@ SQLParser::InsertQueryContext* SQLParser::insertQuery() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(75);
+    setState(79);
     match(SQLParser::T__6);
-    setState(76);
+    setState(80);
     tableName();
-    setState(81);
+    setState(85);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__1) {
-      setState(77);
+      setState(81);
       match(SQLParser::T__1);
-      setState(78);
+      setState(82);
       insertColumns();
-      setState(79);
+      setState(83);
       match(SQLParser::T__2);
     }
-    setState(83);
-    match(SQLParser::T__7);
-    setState(84);
-    match(SQLParser::T__1);
-    setState(85);
-    values();
-    setState(86);
-    match(SQLParser::T__2);
     setState(87);
+    match(SQLParser::T__7);
+    setState(88);
+    match(SQLParser::T__1);
+    setState(89);
+    values();
+    setState(90);
+    match(SQLParser::T__2);
+    setState(91);
     match(SQLParser::T__3);
    
   }
@@ -627,19 +638,19 @@ SQLParser::DeleteQueryContext* SQLParser::deleteQuery() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(89);
+    setState(93);
     match(SQLParser::T__8);
-    setState(90);
+    setState(94);
     tableName();
-    setState(92);
+    setState(96);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__16) {
-      setState(91);
+      setState(95);
       whereClause();
     }
-    setState(94);
+    setState(98);
     match(SQLParser::T__3);
    
   }
@@ -713,27 +724,27 @@ SQLParser::UpdateQueryContext* SQLParser::updateQuery() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(96);
-    match(SQLParser::T__9);
-    setState(97);
-    tableName();
-    setState(98);
-    match(SQLParser::T__10);
-    setState(99);
-    column();
     setState(100);
-    match(SQLParser::T__11);
+    match(SQLParser::T__9);
     setState(101);
-    value();
+    tableName();
+    setState(102);
+    match(SQLParser::T__10);
     setState(103);
+    column();
+    setState(104);
+    match(SQLParser::T__11);
+    setState(105);
+    value();
+    setState(107);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__16) {
-      setState(102);
+      setState(106);
       whereClause();
     }
-    setState(105);
+    setState(109);
     match(SQLParser::T__3);
    
   }
@@ -802,21 +813,21 @@ SQLParser::CreateIndexContext* SQLParser::createIndex() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(107);
-    match(SQLParser::T__12);
-    setState(108);
-    indexName();
-    setState(109);
-    match(SQLParser::T__13);
-    setState(110);
-    tableName();
     setState(111);
-    match(SQLParser::T__1);
+    match(SQLParser::T__12);
     setState(112);
-    column();
+    indexName();
     setState(113);
-    match(SQLParser::T__2);
+    match(SQLParser::T__13);
     setState(114);
+    tableName();
+    setState(115);
+    match(SQLParser::T__1);
+    setState(116);
+    column();
+    setState(117);
+    match(SQLParser::T__2);
+    setState(118);
     match(SQLParser::T__3);
    
   }
@@ -882,17 +893,17 @@ SQLParser::InsertColumnsContext* SQLParser::insertColumns() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(116);
+    setState(120);
     column();
-    setState(121);
+    setState(125);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SQLParser::T__14) {
-      setState(117);
+      setState(121);
       match(SQLParser::T__14);
-      setState(118);
+      setState(122);
       column();
-      setState(123);
+      setState(127);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -959,29 +970,29 @@ SQLParser::ColumnsContext* SQLParser::columns() {
     exitRule();
   });
   try {
-    setState(133);
+    setState(137);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case SQLParser::T__15: {
         enterOuterAlt(_localctx, 1);
-        setState(124);
+        setState(128);
         match(SQLParser::T__15);
         break;
       }
 
       case SQLParser::ID: {
         enterOuterAlt(_localctx, 2);
-        setState(125);
+        setState(129);
         column();
-        setState(130);
+        setState(134);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == SQLParser::T__14) {
-          setState(126);
+          setState(130);
           match(SQLParser::T__14);
-          setState(127);
+          setState(131);
           column();
-          setState(132);
+          setState(136);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
@@ -1050,7 +1061,7 @@ SQLParser::ColumnContext* SQLParser::column() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(135);
+    setState(139);
     match(SQLParser::ID);
    
   }
@@ -1111,7 +1122,7 @@ SQLParser::TableNameContext* SQLParser::tableName() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(137);
+    setState(141);
     match(SQLParser::ID);
    
   }
@@ -1172,7 +1183,7 @@ SQLParser::IndexNameContext* SQLParser::indexName() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(139);
+    setState(143);
     match(SQLParser::ID);
    
   }
@@ -1233,9 +1244,9 @@ SQLParser::WhereClauseContext* SQLParser::whereClause() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(141);
+    setState(145);
     match(SQLParser::T__16);
-    setState(142);
+    setState(146);
     condition();
    
   }
@@ -1297,18 +1308,18 @@ SQLParser::OrderByClauseContext* SQLParser::orderByClause() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(144);
+    setState(148);
     match(SQLParser::T__17);
-    setState(145);
+    setState(149);
     column();
-    setState(147);
+    setState(151);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == SQLParser::T__18
 
     || _la == SQLParser::T__19) {
-      setState(146);
+      setState(150);
       _la = _input->LA(1);
       if (!(_la == SQLParser::T__18
 
@@ -1379,7 +1390,7 @@ SQLParser::ConditionContext* SQLParser::condition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(149);
+    setState(153);
     orCondition();
    
   }
@@ -1453,17 +1464,17 @@ SQLParser::OrConditionContext* SQLParser::orCondition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(151);
+    setState(155);
     andCondition();
-    setState(156);
+    setState(160);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SQLParser::OR) {
-      setState(152);
+      setState(156);
       match(SQLParser::OR);
-      setState(153);
+      setState(157);
       andCondition();
-      setState(158);
+      setState(162);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1539,17 +1550,17 @@ SQLParser::AndConditionContext* SQLParser::andCondition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(159);
+    setState(163);
     baseCondition();
-    setState(164);
+    setState(168);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SQLParser::AND) {
-      setState(160);
+      setState(164);
       match(SQLParser::AND);
-      setState(161);
+      setState(165);
       baseCondition();
-      setState(166);
+      setState(170);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1615,23 +1626,23 @@ SQLParser::BaseConditionContext* SQLParser::baseCondition() {
     exitRule();
   });
   try {
-    setState(172);
+    setState(176);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case SQLParser::T__1: {
         enterOuterAlt(_localctx, 1);
-        setState(167);
+        setState(171);
         match(SQLParser::T__1);
-        setState(168);
+        setState(172);
         condition();
-        setState(169);
+        setState(173);
         match(SQLParser::T__2);
         break;
       }
 
       case SQLParser::ID: {
         enterOuterAlt(_localctx, 2);
-        setState(171);
+        setState(175);
         columnValueCondition();
         break;
       }
@@ -1706,11 +1717,11 @@ SQLParser::ColumnValueConditionContext* SQLParser::columnValueCondition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(174);
+    setState(178);
     column();
-    setState(175);
+    setState(179);
     operator_();
-    setState(176);
+    setState(180);
     value();
    
   }
@@ -1768,7 +1779,7 @@ SQLParser::OperatorContext* SQLParser::operator_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(178);
+    setState(182);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 65015808) != 0))) {
@@ -1842,17 +1853,17 @@ SQLParser::TableValuesContext* SQLParser::tableValues() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(180);
+    setState(184);
     tableValue();
-    setState(185);
+    setState(189);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SQLParser::T__14) {
-      setState(181);
+      setState(185);
       match(SQLParser::T__14);
-      setState(182);
+      setState(186);
       tableValue();
-      setState(187);
+      setState(191);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1877,8 +1888,16 @@ SQLParser::ValueContext* SQLParser::TableValueContext::value() {
   return getRuleContext<SQLParser::ValueContext>(0);
 }
 
-tree::TerminalNode* SQLParser::TableValueContext::TYPE() {
-  return getToken(SQLParser::TYPE, 0);
+SQLParser::DataTypeContext* SQLParser::TableValueContext::dataType() {
+  return getRuleContext<SQLParser::DataTypeContext>(0);
+}
+
+std::vector<SQLParser::ColumnConstraintContext *> SQLParser::TableValueContext::columnConstraint() {
+  return getRuleContexts<SQLParser::ColumnConstraintContext>();
+}
+
+SQLParser::ColumnConstraintContext* SQLParser::TableValueContext::columnConstraint(size_t i) {
+  return getRuleContext<SQLParser::ColumnConstraintContext>(i);
 }
 
 
@@ -1909,6 +1928,7 @@ std::any SQLParser::TableValueContext::accept(tree::ParseTreeVisitor *visitor) {
 SQLParser::TableValueContext* SQLParser::tableValue() {
   TableValueContext *_localctx = _tracker.createInstance<TableValueContext>(_ctx, getState());
   enterRule(_localctx, 42, SQLParser::RuleTableValue);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1919,10 +1939,100 @@ SQLParser::TableValueContext* SQLParser::tableValue() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(188);
+    setState(192);
     value();
-    setState(189);
-    match(SQLParser::TYPE);
+    setState(193);
+    dataType();
+    setState(197);
+    _errHandler->sync(this);
+    _la = _input->LA(1);
+    while (_la == SQLParser::T__25
+
+    || _la == SQLParser::T__27) {
+      setState(194);
+      columnConstraint();
+      setState(199);
+      _errHandler->sync(this);
+      _la = _input->LA(1);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ColumnConstraintContext ------------------------------------------------------------------
+
+SQLParser::ColumnConstraintContext::ColumnConstraintContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t SQLParser::ColumnConstraintContext::getRuleIndex() const {
+  return SQLParser::RuleColumnConstraint;
+}
+
+void SQLParser::ColumnConstraintContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SQLListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterColumnConstraint(this);
+}
+
+void SQLParser::ColumnConstraintContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SQLListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitColumnConstraint(this);
+}
+
+
+std::any SQLParser::ColumnConstraintContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<SQLVisitor*>(visitor))
+    return parserVisitor->visitColumnConstraint(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+SQLParser::ColumnConstraintContext* SQLParser::columnConstraint() {
+  ColumnConstraintContext *_localctx = _tracker.createInstance<ColumnConstraintContext>(_ctx, getState());
+  enterRule(_localctx, 44, SQLParser::RuleColumnConstraint);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(204);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case SQLParser::T__25: {
+        enterOuterAlt(_localctx, 1);
+        setState(200);
+        match(SQLParser::T__25);
+        setState(201);
+        match(SQLParser::T__26);
+        break;
+      }
+
+      case SQLParser::T__27: {
+        enterOuterAlt(_localctx, 2);
+        setState(202);
+        match(SQLParser::T__27);
+        setState(203);
+        match(SQLParser::T__28);
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
    
   }
   catch (RecognitionException &e) {
@@ -1975,7 +2085,7 @@ std::any SQLParser::ValuesContext::accept(tree::ParseTreeVisitor *visitor) {
 
 SQLParser::ValuesContext* SQLParser::values() {
   ValuesContext *_localctx = _tracker.createInstance<ValuesContext>(_ctx, getState());
-  enterRule(_localctx, 44, SQLParser::RuleValues);
+  enterRule(_localctx, 46, SQLParser::RuleValues);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1987,17 +2097,17 @@ SQLParser::ValuesContext* SQLParser::values() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(191);
+    setState(206);
     value();
-    setState(196);
+    setState(211);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SQLParser::T__14) {
-      setState(192);
+      setState(207);
       match(SQLParser::T__14);
-      setState(193);
+      setState(208);
       value();
-      setState(198);
+      setState(213);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -2057,7 +2167,7 @@ std::any SQLParser::ValueContext::accept(tree::ParseTreeVisitor *visitor) {
 
 SQLParser::ValueContext* SQLParser::value() {
   ValueContext *_localctx = _tracker.createInstance<ValueContext>(_ctx, getState());
-  enterRule(_localctx, 46, SQLParser::RuleValue);
+  enterRule(_localctx, 48, SQLParser::RuleValue);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -2069,15 +2179,119 @@ SQLParser::ValueContext* SQLParser::value() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(199);
+    setState(214);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 7516192768) != 0))) {
+      ((1ULL << _la) & 481036337152) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
       _errHandler->reportMatch(this);
       consume();
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- DataTypeContext ------------------------------------------------------------------
+
+SQLParser::DataTypeContext::DataTypeContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* SQLParser::DataTypeContext::NUMBER() {
+  return getToken(SQLParser::NUMBER, 0);
+}
+
+
+size_t SQLParser::DataTypeContext::getRuleIndex() const {
+  return SQLParser::RuleDataType;
+}
+
+void SQLParser::DataTypeContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SQLListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterDataType(this);
+}
+
+void SQLParser::DataTypeContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SQLListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitDataType(this);
+}
+
+
+std::any SQLParser::DataTypeContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<SQLVisitor*>(visitor))
+    return parserVisitor->visitDataType(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+SQLParser::DataTypeContext* SQLParser::dataType() {
+  DataTypeContext *_localctx = _tracker.createInstance<DataTypeContext>(_ctx, getState());
+  enterRule(_localctx, 50, SQLParser::RuleDataType);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(226);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case SQLParser::T__29: {
+        enterOuterAlt(_localctx, 1);
+        setState(216);
+        match(SQLParser::T__29);
+        break;
+      }
+
+      case SQLParser::T__30: {
+        enterOuterAlt(_localctx, 2);
+        setState(217);
+        match(SQLParser::T__30);
+        break;
+      }
+
+      case SQLParser::T__31: {
+        enterOuterAlt(_localctx, 3);
+        setState(218);
+        match(SQLParser::T__31);
+        setState(219);
+        match(SQLParser::T__1);
+        setState(220);
+        match(SQLParser::NUMBER);
+        setState(221);
+        match(SQLParser::T__2);
+        break;
+      }
+
+      case SQLParser::T__32: {
+        enterOuterAlt(_localctx, 4);
+        setState(222);
+        match(SQLParser::T__32);
+        setState(223);
+        match(SQLParser::T__1);
+        setState(224);
+        match(SQLParser::NUMBER);
+        setState(225);
+        match(SQLParser::T__2);
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
     }
    
   }

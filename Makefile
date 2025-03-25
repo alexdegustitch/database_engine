@@ -12,9 +12,37 @@ ANTLR_FILES = $(ANTLR_GEN_DIR)/SQLLexer.cpp $(ANTLR_GEN_DIR)/SQLParser.cpp $(ANT
 BTREE_DIR = src/bplustree
 BTREE_FILES = $(BTREE_DIR)/BPlusTree.cpp $(BTREE_DIR)/FreeListManager.cpp $(BTREE_DIR)/IndexManager.cpp
 
+# Buffer Files
+BUFFER_DIR = src/buffer
+BUFFER_FILES = $(BUFFER_DIR)/BufferManager.cpp $(BUFFER_DIR)/BufferPool.cpp
+
+# Catalog Files
+CATALOG_DIR = src/catalog
+CATALOG_FILES = $(CATALOG_DIR)/Record.cpp $(CATALOG_DIR)/RecordManager.cpp $(CATALOG_DIR)/SystemTableManager.cpp
+
+# Index Files
+INDEX_DIR = src/index
+INDEX_FILES = $(INDEX_DIR)/IndexHandler.cpp
+
+# Database Files
+DATABASE_DIR = src/database
+DATABASE_FILES = $(DATABASE_DIR)/DatabaseManager.cpp
+
+# Query Condition Files
+QUERY_CONDITION_DIR = src/query/condition
+QUERY_CONDITION_FILES = $(QUERY_CONDITION_DIR)/ConditionTree.cpp $(QUERY_CONDITION_DIR)/InternalConditionNode.cpp $(QUERY_CONDITION_DIR)/LeafConditionNode.cpp
+
+# Storage Files
+STORAGE_DIR = src/storage
+STORAGE_FILES = $(STORAGE_DIR)/DataManager.cpp $(STORAGE_DIR)/Page.cpp $(STORAGE_DIR)/PageManager.cpp $(STORAGE_DIR)/FreeSpaceManager.cpp
+
+# Utils Files
+UTILS_DIR = src/utils
+UTILS_FILES = $(UTILS_DIR)/TypeConverter.cpp
+
 # Source Files
 SRC_DIR = src
-SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/QueryEngine.cpp $(SRC_DIR)/TableHandler.cpp $(SRC_DIR)/SQLQueryVisitor.cpp $(ANTLR_FILES) $(BTREE_FILES)
+SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/QueryEngine.cpp $(SRC_DIR)/SQLQueryVisitor.cpp $(ANTLR_FILES) $(BTREE_FILES) $(BUFFER_FILES) $(INDEX_FILES) $(CATALOG_FILES) $(QUERY_CONDITION_FILES) $(STORAGE_FILES) $(DATABASE_FILES) $(UTILS_FILES)
 
 # Object Files
 OBJ_FILES = $(SRC_FILES:.cpp=.o)

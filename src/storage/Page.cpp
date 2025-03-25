@@ -7,7 +7,7 @@ Page::Page()
     header.freeSpaceOffset = PAGE_SIZE - sizeof(header);
 };
 
-bool Page::insertRecord(const std::vector<char> &record, uint64_t offset)
+int Page::insertRecord(const std::vector<char> &record)
 {
     int recordSize = record.size();
 
@@ -20,13 +20,13 @@ bool Page::insertRecord(const std::vector<char> &record, uint64_t offset)
     header.freeSpaceOffset -= recordSize;
     header.numRecords++;
 
-    uint64_t recordOffset = header.freeSpaceOffset;
+    int recordOffset = header.freeSpaceOffset;
 
     memcpy(data + recordOffset, record.data(), recordSize);
 
     slotDirectory.push_back(recordOffset);
     dirty = true;
-    return true;
+    return recordOffset;
 }
 
 bool Page::readRecord(int slotIndex, std::vector<char> &record) const
@@ -62,4 +62,9 @@ void Page::loadFromFile(const char *fileData)
     memcpy(&header, fileData, sizeof(PageHeader));
     memcpy(data, fileData + sizeof(header), PAGE_SIZE - sizeof(PageHeader));
     dirty = false;
+}
+
+uint64_t Page::getFreeSpace()
+{
+    return header.freeSpaceOffset - (sizeof(PageHeader) + (header.numRecords + 1) * sizeof(int));
 }

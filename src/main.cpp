@@ -1,10 +1,11 @@
 #include "QueryEngine.h"
-#include "TableHandler.h"
+#include "catalog/SystemTableManager.h"
 #include <iostream>
 #include <string>
 
 int main()
 {
+    SystemTableManager::getInstance().loadAllSchemas();
     QueryEngine engine;
     std::string query;
     while (true)

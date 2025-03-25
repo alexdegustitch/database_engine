@@ -15,9 +15,9 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, AND = 26, 
-    OR = 27, TYPE = 28, VARCHAR = 29, ID = 30, STRING = 31, NUMBER = 32, 
-    WS = 33
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
+    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
+    T__32 = 33, AND = 34, OR = 35, ID = 36, STRING = 37, NUMBER = 38, WS = 39
   };
 
   enum {
@@ -26,8 +26,8 @@ public:
     RuleColumns = 8, RuleColumn = 9, RuleTableName = 10, RuleIndexName = 11, 
     RuleWhereClause = 12, RuleOrderByClause = 13, RuleCondition = 14, RuleOrCondition = 15, 
     RuleAndCondition = 16, RuleBaseCondition = 17, RuleColumnValueCondition = 18, 
-    RuleOperator = 19, RuleTableValues = 20, RuleTableValue = 21, RuleValues = 22, 
-    RuleValue = 23
+    RuleOperator = 19, RuleTableValues = 20, RuleTableValue = 21, RuleColumnConstraint = 22, 
+    RuleValues = 23, RuleValue = 24, RuleDataType = 25
   };
 
   explicit SQLParser(antlr4::TokenStream *input);
@@ -69,8 +69,10 @@ public:
   class OperatorContext;
   class TableValuesContext;
   class TableValueContext;
+  class ColumnConstraintContext;
   class ValuesContext;
-  class ValueContext; 
+  class ValueContext;
+  class DataTypeContext; 
 
   class  QueryContext : public antlr4::ParserRuleContext {
   public:
@@ -420,7 +422,9 @@ public:
     TableValueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     ValueContext *value();
-    antlr4::tree::TerminalNode *TYPE();
+    DataTypeContext *dataType();
+    std::vector<ColumnConstraintContext *> columnConstraint();
+    ColumnConstraintContext* columnConstraint(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -430,6 +434,20 @@ public:
   };
 
   TableValueContext* tableValue();
+
+  class  ColumnConstraintContext : public antlr4::ParserRuleContext {
+  public:
+    ColumnConstraintContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColumnConstraintContext* columnConstraint();
 
   class  ValuesContext : public antlr4::ParserRuleContext {
   public:
@@ -463,6 +481,21 @@ public:
   };
 
   ValueContext* value();
+
+  class  DataTypeContext : public antlr4::ParserRuleContext {
+  public:
+    DataTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DataTypeContext* dataType();
 
 
   // By default the static state used to implement the parser is lazily initialized during the first

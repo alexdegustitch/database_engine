@@ -17,11 +17,13 @@ class Page
 {
 public:
     Page();
-    bool insertRecord(const std::vector<char> &record, uint64_t recordOffset);
+    int insertRecord(const std::vector<char> &record);
     bool readRecord(int slotIndex, std::vector<char> &record) const;
     bool deleteRecord(int slotIndex);
     char *getData() { return data; };
     void loadFromFile(const char *diskData);
+    uint64_t getFreeSpace();
+    void setPageID(int id) { header.pageId = id; }
     void markDirty() { dirty = true; };
     void clearDirty() { dirty = false; };
     bool isDirty() { return dirty; };

@@ -9,9 +9,10 @@ class BufferManager
 {
 public:
     BufferManager();
-    Page *fetchPage(std::string &tableName, int id);
+    static BufferManager &getInstance();
+    Page *fetchPage(const std::string &tableName, int id);
     void unpinPage(int id);
-    void flushPage(std::string &tableName, int id);
+    void flushPage(const std::string &tableName, int id);
     void flashAllPages();
 
 private:
@@ -21,7 +22,7 @@ private:
 
     std::fstream &getFile(std::string tableName);
 
-    void readPageFromFile(std::string tableName, int id, Page *p);
-    void writePageToFile(std::string tableName, int id, Page *p);
+    void readPageFromFile(const std::string &tableName, int id, Page *p);
+    void writePageToFile(const std::string &tableName, int id, Page *p);
 };
 #endif

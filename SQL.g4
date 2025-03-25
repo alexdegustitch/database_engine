@@ -29,16 +29,16 @@ andCondition : baseCondition (AND baseCondition)* ;
 baseCondition : '(' condition ')' | columnValueCondition ;
 columnValueCondition : column operator value ;
 operator : '=' | '>' | '<' | '>=' | '<=' | '<>' ;
+tableValues : tableValue (',' tableValue)* ;
+tableValue : value dataType columnConstraint* ;
+columnConstraint : 'PRIMARY' 'KEY' | 'NOT' 'NULL' ;
+values : value (',' value)* ;
+value : ID | STRING | NUMBER ;
+dataType : 'INT' | 'TEXT' | 'VARCHAR' '(' NUMBER ')' | 'CHAR' '(' NUMBER ')' ;
+
 AND : 'AND' ;
 OR : 'OR' ;
-tableValues : tableValue (',' tableValue)* ;
-tableValue : value TYPE ;
-values : value (',' value)* ;
-value : ID ;
-
-TYPE : 'INT' | 'TEXT' | VARCHAR ;
-VARCHAR : 'VARCHAR' '(' NUMBER ')' ;
 ID : [a-zA-Z_][a-zA-Z0-9_]* ;
 STRING : '"' .*? '"' ;
-NUMBER : [0-9]+ ;
+NUMBER : [1-9]+ [0-9]* ;
 WS : [ \t\r\n]+ -> skip ;
