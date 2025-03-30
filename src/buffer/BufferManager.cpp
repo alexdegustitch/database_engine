@@ -40,9 +40,17 @@ void BufferManager::flushPage(const std::string &tableName, int id)
 {
 
     Page *page = pool.getPage(id);
+    if (page == nullptr)
+    {
+        std::cout << "page is nullptr" << std::endl;
+    }
+    if (page != nullptr && !page->isDirty())
+    {
+        std::cout << "page is not dirty" << std::endl;
+    }
     if (page != nullptr && page->isDirty())
     {
-        std::fstream &file = getFile(tableName);
+        // std::fstream &file = getFile(tableName);
         writePageToFile(tableName, id, page);
         page->clearDirty();
     }
@@ -59,27 +67,59 @@ void BufferManager::flashAllPages()
     }
 }
 
-std::fstream &BufferManager::getFile(std::string tableName)
+std::fstream &BufferManager::getFile(const std::string &tableName)
 {
+    // If not already open, open and store the stream
     if (openFiles.find(tableName) == openFiles.end())
     {
-        openFiles[tableName] = std::fstream("data/" + tableName + ".dat", std::ios::out | std::ios::binary);
-        if (!openFiles[tableName])
+        std::string path = "data/data/" + tableName + ".dat";
+
+        // Ensure the file exists (create it if not)
+        if (!std::filesystem::exists(path))
         {
-            openFiles[tableName].open("data/" + tableName + ".dat", std::ios::out | std::ios::binary);
-            openFiles[tableName].close();
-            openFiles[tableName].open("data/" + tableName + ".dat", std::ios::in | std::ios::out | std::ios::binary);
+            std::ofstream createFile(path, std::ios::binary);
+            if (!createFile)
+            {
+                throw std::runtime_error("Failed to create file: " + path);
+            }
+            createFile.close();
         }
+
+        // Open the file in read/write binary mode
+        std::fstream file(path, std::ios::in | std::ios::out | std::ios::binary);
+        int i = 1;
+        file.write(reinterpret_cast<char *>(&i), sizeof(int));
+        file.flush();
+        if (!file.is_open())
+        {
+            throw std::runtime_error("Failed to open file: " + path);
+        }
+
+        std::cout << "[getFile] Opened file: " << path << std::endl;
+
+        // Store the open file stream using move semantics
+        openFiles.emplace(tableName, std::move(file));
     }
-    return openFiles[tableName];
+
+    return openFiles.at(tableName);
 }
 
 void BufferManager::readPageFromFile(const std::string &tableName, int id, Page *p)
 {
-    std::fstream &file = getFile(tableName);
-    if (!file)
+    std::string path = "data/data/" + tableName + ".dat";
+    std::filesystem::create_directories("data/data");
+
+    // Create file if it doesn't exist
+    if (!std::filesystem::exists(path))
     {
-        std::cerr << "Could not read data from the file!" << std::endl;
+        std::ofstream(path, std::ios::binary).close();
+    }
+
+    // Open file for reading & writing in binary mode
+    std::ifstream file(path, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Failed to open file for writing: " + path);
     }
     file.seekg(PAGE_SIZE * id);
     file.read(p->getData(), PAGE_SIZE);
@@ -87,10 +127,32 @@ void BufferManager::readPageFromFile(const std::string &tableName, int id, Page 
 
 void BufferManager::writePageToFile(const std::string &tableName, int id, Page *p)
 {
-    std::fstream &file = getFile(tableName);
-    file.seekp(id * PAGE_SIZE);
-    file.write(p->getData(), PAGE_SIZE);
+    std::string path = "data/data/" + tableName + ".dat";
+    std::filesystem::create_directories("data/data");
 
+    // Create file if it doesn't exist
+    if (!std::filesystem::exists(path))
+    {
+        std::ofstream(path, std::ios::binary).close();
+    }
+
+    // Open file for reading & writing in binary mode
+    std::ofstream file(path, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("Failed to open file for writing: " + path);
+    }
+    // Seek to the correct page offset
+    file.seekp(id * PAGE_SIZE);
+
+    // Create buffer
+    char buffer[PAGE_SIZE];
+    p->writeToFile(buffer);
+
+    // Write buffer
+    file.write(buffer, PAGE_SIZE);
+    file.flush();
+    std::cout << "file written" << std::endl;
     if (!file)
     {
         std::cerr << "Could not write data to the file!" << std::endl;

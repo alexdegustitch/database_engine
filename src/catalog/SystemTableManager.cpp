@@ -12,9 +12,10 @@ int SystemTableManager::getNextTableId()
     }
 
     offset -= sizeof(TableSchema);
-
+    file.seekg(offset, std::ios::beg);
     int id;
     file.read(reinterpret_cast<char *>(&id), sizeof(int));
+    std::cout << "TABLE ID: " << id << std::endl;
     file.close();
     return id + 1;
 }
@@ -31,9 +32,10 @@ int SystemTableManager::getNextColumnId()
     }
 
     offset -= sizeof(ColumnSchema);
-
+    file.seekg(offset, std::ios::beg);
     int id;
     file.read(reinterpret_cast<char *>(&id), sizeof(int));
+    std::cout << "COLUMN ID: " << id << std::endl;
     file.close();
     return id + 1;
 }
@@ -48,8 +50,10 @@ int SystemTableManager::getNextIndexId()
         return 1;
     }
     offset -= sizeof(IndexSchema);
+    file.seekg(offset, std::ios::beg);
     int id;
     file.read(reinterpret_cast<char *>(&id), sizeof(int));
+    std::cout << "INDEX ID: " << id << std::endl;
     file.close();
     return id + 1;
 }
@@ -66,6 +70,7 @@ SystemTableManager::SystemTableManager()
     colsFile = "data/catalog_columns.dat";
     indexesFile = "data/catalog_indexes.dat";
     createSystemTables();
+    loadAllSchemas();
 }
 
 void SystemTableManager::createSystemTables()
@@ -116,8 +121,10 @@ int SystemTableManager::insertTableSchema(const std::string &tableName, std::vec
         strncpy(clSchema.type, col.type, 16);
         clFile.write(reinterpret_cast<char *>(&clSchema), sizeof(ColumnSchema));
         std::string id = std::string(clSchema.columnName) + ":" + std::to_string(clSchema.tableId);
+        std::cout << "Insert clmn schema: " << id << std::endl;
         columnNameToSchema[id] = clSchema;
         columnSchemasForTable[tableId].push_back(clSchema);
+        colsInTable[tableId].push_back(clSchema.columnName);
         ++colId;
     }
     clFile.close();
@@ -174,7 +181,7 @@ TableSchema &SystemTableManager::getTableSchema(const std::string &tableName, st
     return tbSchema;
 }
 
-int SystemTableManager::insertIndexSchema(const std::string &tableName, const std::string &colName, IndexSchema &indexSchema, const std::string &fullName)
+int SystemTableManager::insertIndexSchema(const std::string &tableName, const std::string &colName, const std::string &fullName, bool isUnique)
 {
     std::ofstream file(indexesFile, std::ios::binary | std::ios::app);
     if (!file)
@@ -184,10 +191,12 @@ int SystemTableManager::insertIndexSchema(const std::string &tableName, const st
 
     int id = getNextIndexId();
     int tableId = tableNameToSchema[tableName].tableId;
-    int columnId = columnNameToSchema[colName].columnId;
+    int columnId = columnNameToSchema[colName + ":" + std::to_string(tableId)].columnId;
+    IndexSchema indexSchema;
     indexSchema.columnId = columnId;
     indexSchema.indexId = id;
     indexSchema.tableId = tableId;
+    indexSchema.isUnique = isUnique;
     strncpy(indexSchema.indexName, fullName.c_str(), sizeof(fullName));
 
     file.write(reinterpret_cast<char *>(&indexSchema), sizeof(IndexSchema));
@@ -260,10 +269,23 @@ std::vector<ColumnSchema> &SystemTableManager::getAllColumnSchemasForTable(const
 
 std::vector<ColumnSchema> SystemTableManager::getSchemasForColumns(const std::string &tableName, std::vector<std::string> &cols)
 {
+    for (auto it : columnNameToSchema)
+    {
+        std::cout << "ColNameSchema: " << it.first << std::endl;
+    }
     std::vector<ColumnSchema> res;
     for (std::string &name : cols)
     {
-        std::string fullName = name + ":" + tableName;
+        std::string fullName = name + ":" + std::to_string(tableNameToSchema[tableName].tableId);
+        std::cout << fullName << columnNameToSchema[fullName].type << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].columnId << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].columnName << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].size << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].isPrimary << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].isNotNull << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].isVariable << std::endl;
+        std::cout << fullName << columnNameToSchema[fullName].tableId << std::endl;
+        std::cout << "NEW" << std::endl;
         res.push_back(columnNameToSchema[fullName]);
     }
     return res;

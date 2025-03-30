@@ -64,6 +64,12 @@ void Page::loadFromFile(const char *fileData)
     dirty = false;
 }
 
+void Page::writeToFile(char *fileData)
+{
+    memcpy(fileData, &header, sizeof(PageHeader));
+    memcpy(fileData + sizeof(PageHeader), data, PAGE_SIZE - sizeof(PageHeader));
+}
+
 uint64_t Page::getFreeSpace()
 {
     return header.freeSpaceOffset - (sizeof(PageHeader) + (header.numRecords + 1) * sizeof(int));

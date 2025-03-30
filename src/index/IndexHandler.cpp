@@ -9,11 +9,12 @@ IndexHandler &IndexHandler::getInstance()
     static IndexHandler instance;
     return instance;
 }
-void IndexHandler::loadIndex(std::string fileName, int maxKeys)
+void IndexHandler::loadIndex(std::string fullName, int maxKeys)
 {
-    if (fileToIndex.find(fileName) == fileToIndex.end())
+    std::string fileName = "meta/indexes/" + fullName + ".idx";
+    if (fileToIndex.find(fullName) == fileToIndex.end())
     {
-        fileToIndex[fileName] = new BPlusTree(fileName, maxKeys);
+        fileToIndex[fullName] = new BPlusTree(fileName, maxKeys);
     }
 }
 
@@ -21,6 +22,7 @@ void IndexHandler::insertIntoIndex(std::string file, int key, uint64_t pageId, u
 {
     if (fileToIndex.find(file) == fileToIndex.end())
     {
+        std::cout << file << std::endl;
         std::cerr << "Cannot find index file!" << std::endl;
         return;
     }

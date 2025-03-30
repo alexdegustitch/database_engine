@@ -587,6 +587,7 @@ public:
     void insert(int key, uint64_t pageId, uint64_t slotIdx)
     {
         std::cout << "Insert method" << std::endl;
+        std::cout << "Key: " << key << ", pageId: " << pageId << ", offset: " << slotIdx << std::endl;
         LeafNode *leaf = findLeaf(key);
         auto it = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), key);
         leaf->keys.insert(it, key);
@@ -596,6 +597,7 @@ public:
         {
             splitLeaf(leaf->offset);
         }
+        std::cout << "Insert method done" << std::endl;
     }
 
     int deleteKey(int key)

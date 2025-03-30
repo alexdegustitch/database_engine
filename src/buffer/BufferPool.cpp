@@ -36,6 +36,7 @@ void BufferPool::addPage(int id, const std::string &tableName, Page *page)
         evictPage(tableName);
     }
     buffer.push_back(pFrame);
+    map[id] = pFrame;
 
     if (lastFetchedPage != -1 && lastFetchedPage + 1 == id)
     {

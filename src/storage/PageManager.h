@@ -12,6 +12,8 @@ public:
     static PageManager &getInstance();
 
     int findPageWithFreeSpace(const std::string &tableName);
+    void updateFSM(const std::string &tableName, int pageId, uint16_t freeSpace);
+    void saveFSM(const std::string &tableName);
 
 private:
     std::unordered_map<std::string, FreeSpaceManager> fsmTables;

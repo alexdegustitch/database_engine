@@ -13,8 +13,7 @@ antlrcpp::Any SQLQueryVisitor::visitCreateQuery(SQLParser::CreateQueryContext *c
     std::cout << "Visiting Create Query..." << ctx->tableName()->getText() << std::endl;
     std::string tableName = ctx->tableName()->getText();
     std::vector<ColumnSchema> cols = std::any_cast<std::vector<ColumnSchema>>(visit(ctx->tableValues()));
-    IndexSchema indexSchema;
-    indexSchema.isUnique = true;
+
     std::string primaryKeyCol;
     for (auto cl : cols)
     {
@@ -26,9 +25,8 @@ antlrcpp::Any SQLQueryVisitor::visitCreateQuery(SQLParser::CreateQueryContext *c
     }
     SystemTableManager::getInstance().insertTableSchema(tableName, cols);
     std::string fullName = tableName + "_" + primaryKeyCol + "_idx";
-    SystemTableManager::getInstance().insertIndexSchema(tableName, primaryKeyCol, indexSchema, fullName);
-    IndexHandler handler;
-    handler.loadIndex("meta/indexes/" + tableName + "_" + primaryKeyCol + "_idx.idx", 4);
+    SystemTableManager::getInstance().insertIndexSchema(tableName, primaryKeyCol, fullName, true);
+    IndexHandler::getInstance().loadIndex(fullName, 4);
 
     return nullptr;
 }
@@ -48,7 +46,8 @@ antlrcpp::Any SQLQueryVisitor::visitTableValues(SQLParser::TableValuesContext *c
         bool isPrimary = false;
         for (auto cc : c->columnConstraint())
         {
-            if (cc->getText() == "PRIMARY KEY")
+            std::cout << "Text: " << cc->getText() << std::endl;
+            if (cc->getText() == "PRIMARYKEY")
             {
                 if (isPrimary)
                 {
@@ -125,6 +124,8 @@ antlrcpp::Any SQLQueryVisitor::visitInsertQuery(SQLParser::InsertQueryContext *c
     }
     std::vector<std::string> values = std::any_cast<std::vector<std::string>>(visit(ctx->values()));
     DatabaseManager::getInstance().insertRecord(tableName, cols, values);
+    std::cout << "I am here in the end of visit insert query" << std::endl;
+    return nullptr;
 }
 
 antlrcpp::Any SQLQueryVisitor::visitInsertColumns(SQLParser::InsertColumnsContext *ctx)

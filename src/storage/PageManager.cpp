@@ -35,6 +35,15 @@ int PageManager::allocatePage(const std::string &tableName)
     manager.growToPage(id);
     return id;
 }
+void PageManager::updateFSM(const std::string &tableName, int pageId, uint16_t freeSpace)
+{
+    getFSMManager(tableName).update(pageId, freeSpace);
+}
+
+void PageManager::saveFSM(const std::string &tableName)
+{
+    getFSMManager(tableName).save();
+}
 
 FreeSpaceManager &PageManager::getFSMManager(const std::string &tableName)
 {

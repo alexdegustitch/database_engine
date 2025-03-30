@@ -66,7 +66,7 @@ public:
 
     int insertTableSchema(const std::string &tableName, std::vector<ColumnSchema> &cols);
     TableSchema &getTableSchema(const std::string &tableName, std::vector<ColumnSchema> &cols);
-    int insertIndexSchema(const std::string &tableName, const std::string &columnName, IndexSchema &indexSchema, const std::string &fullName);
+    int insertIndexSchema(const std::string &tableName, const std::string &columnName, const std::string &fullName, bool isUnique);
 
     void loadAllSchemas();
     void loadTableSchema();

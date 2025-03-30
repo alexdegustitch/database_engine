@@ -3,8 +3,6 @@
 RecordManager::RecordManager()
 {
     // tableManager = SystemTableManager::getInstance();
-    bufferManager = new BufferManager();
-    indexHandler = new IndexHandler();
 }
 
 RecordManager &RecordManager::getInstance()
@@ -48,10 +46,10 @@ std::unordered_map<int, DataType> RecordManager::serializeData(std::vector<std::
     {
         std::string &colName = colNames[i];
         std::string &colVal = colVals[i];
-
+        std::cout << "Col name: " << colName << ", col val: " << colVal;
         ColumnSchema &colSchema = schemas[i];
         std::string str(colSchema.type);
-        std::cout << str << std::endl;
+        std::cout << "Serialize Data" << str << std::endl;
         columnValues[colSchema.columnId] = TypeConverter::getInstance().deserializeValue(colSchema.type, colVal);
         if (strcmp(colSchema.type, "INT") == 0)
         {

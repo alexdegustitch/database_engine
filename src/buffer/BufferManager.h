@@ -20,7 +20,7 @@ private:
     std::unordered_map<std::string, std::fstream> openFiles;
     std::unordered_map<int, std::string> pageToTable;
 
-    std::fstream &getFile(std::string tableName);
+    std::fstream &getFile(const std::string &tableName);
 
     void readPageFromFile(const std::string &tableName, int id, Page *p);
     void writePageToFile(const std::string &tableName, int id, Page *p);

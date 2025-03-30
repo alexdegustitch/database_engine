@@ -75,11 +75,13 @@ void IndexManager::writeNode(std::fstream &file, uint64_t offset, Node *node, in
 
     // Calculate the padding needed to reach the fixed node size.
     std::streamsize padBytes = fixedSize - bytesWritten;
+    std::cout << "Curr pos: " << currentPos << ", bytes written: " << bytesWritten << ", padBytes: " << padBytes << std::endl;
     if (padBytes > 0)
     {
         std::vector<char> zeroPad(padBytes, 0);
         file.write(zeroPad.data(), padBytes);
     }
+    std::cout << "I am here  " << std::endl;
     file.flush();
 }
 

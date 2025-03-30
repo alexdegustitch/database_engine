@@ -1,10 +1,34 @@
 #include "QueryEngine.h"
 #include "catalog/SystemTableManager.h"
+#include <filesystem>
 #include <iostream>
 #include <string>
 
+namespace fs = std::filesystem;
+
+void deleteAllFilesInFolder(const std::string &folderPath)
+{
+    try
+    {
+        for (const auto &entry : fs::directory_iterator(folderPath))
+        {
+            if (fs::is_regular_file(entry))
+            {
+                fs::remove(entry.path());
+            }
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error deleting files: " << e.what() << std::endl;
+    }
+}
 int main()
 {
+    deleteAllFilesInFolder("data/data");
+    deleteAllFilesInFolder("data/fsm");
+    deleteAllFilesInFolder("data");
+    deleteAllFilesInFolder("meta/indexes");
     SystemTableManager::getInstance().loadAllSchemas();
     QueryEngine engine;
     std::string query;
@@ -13,10 +37,14 @@ int main()
         std::cout << "SQL> ";
 
         std::getline(std::cin, query);
-        if (query == "exit")
+        std::transform(query.begin(), query.end(), query.begin(),
+                       [](unsigned char c)
+                       { return std::toupper(c); });
+        if (query == "EXIT")
         {
             break;
         }
+        std::cout << query << std::endl;
         engine.executeQuery(query);
     }
 

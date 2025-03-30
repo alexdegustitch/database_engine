@@ -22,6 +22,7 @@ public:
     bool deleteRecord(int slotIndex);
     char *getData() { return data; };
     void loadFromFile(const char *diskData);
+    void writeToFile(char *fileData);
     uint64_t getFreeSpace();
     void setPageID(int id) { header.pageId = id; }
     void markDirty() { dirty = true; };

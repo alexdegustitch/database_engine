@@ -2,12 +2,15 @@
 
 FreeSpaceManager::FreeSpaceManager(const std::string &path) : filePath(path)
 {
-    std::ofstream file(path, std::ios::binary);
-    if (!file)
+    if (!std::filesystem::exists(path))
     {
-        std::cerr << "Could not open file for FSM file " << path << std::endl;
+        std::ofstream file(path, std::ios::binary);
+        if (!file)
+        {
+            std::cerr << "Could not create FSM file: " << path << std::endl;
+        }
+        file.close();
     }
-    file.close();
 }
 
 FreeSpaceManager &FreeSpaceManager::getInstance(const std::string &path)
