@@ -32,6 +32,14 @@ int main()
     SystemTableManager::getInstance().loadAllSchemas();
     QueryEngine engine;
     std::string query;
+    engine.executeQuery("CREATE TABLE ANIMALS (ID INT PRIMARY KEY, AGE INT);");
+    engine.executeQuery("INSERT INTO ANIMALS VALUES(1, 3);");
+    engine.executeQuery("INSERT INTO ANIMALS VALUES(2, 10);");
+    engine.executeQuery("INSERT INTO ANIMALS VALUES(3, 4);");
+    engine.executeQuery("INSERT INTO ANIMALS VALUES(4, 15);");
+    engine.executeQuery("INSERT INTO ANIMALS VALUES(5, 22);");
+    engine.executeQuery("SELECT ID, AGE FROM ANIMALS;");
+
     while (true)
     {
         std::cout << "SQL> ";

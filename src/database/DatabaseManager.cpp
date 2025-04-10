@@ -20,6 +20,14 @@ bool DatabaseManager::insertRecord(const std::string &tableName, std::vector<std
     std::vector<ColumnSchema> schemas = SystemTableManager::getInstance().getSchemasForColumns(tableName, cols);
     std::vector<char> row;
     std::unordered_map<int, DataType> colValues = RecordManager::getInstance().serializeData(cols, values, schemas, row);
+    std::cout << "INSERTING VALUES: " << std::endl;
+    for (auto curr : colValues)
+    {
+        std::cout << curr.first << " ";
+        TypeConverter::getInstance().printDataTypeFormatted(curr.second, 10);
+    }
+    std::cout << "\n ";
+
     int pageId = PageManager::getInstance().findPageWithFreeSpace(tableName);
     Page *p = BufferManager::getInstance().fetchPage(tableName, pageId);
     int slotIdx = p->insertRecord(row);
@@ -37,4 +45,143 @@ bool DatabaseManager::insertRecord(const std::string &tableName, std::vector<std
         IndexHandler::getInstance().insertIntoIndex(idx.first, std::get<int>(val), pageId, slotIdx);
     }
     std::cout << "Insert record done " << std::endl;
+}
+
+bool DatabaseManager::selectRecord(const std::string &tableName, std::vector<std::string> &cols, ConditionTree *tree, std::vector<LeafConditionNode *> idxNodes, std::vector<std::pair<std::string, std::string>> &orderCol)
+{
+    std::cout << "Select record method " << std::endl;
+    std::vector<std::pair<uint64_t, uint64_t>> offsets;
+    if (idxNodes.size() > 0)
+    {
+        std::string colName = idxNodes[0]->getColName();
+        std::string idxName = tableName + "_" + colName + "_idx";
+        IndexSchema idxSchema = SystemTableManager::getInstance().getAllIndexSchema()[idxName];
+        if (idxNodes[0]->getOp() == COMPARISON_OP::EQ)
+        {
+            IndexHandler::getInstance().searchFromIndex(idxName, std::get<int>(idxNodes[0]->getConvertedValue()), offsets);
+        }
+        else if (idxNodes[0]->getOp() != COMPARISON_OP::NE)
+        {
+            bool isStart = false, isEnd = false;
+            COMPARISON_OP startOp, endOp;
+            int startKey, endKey;
+
+            int i = 0;
+            int len = idxNodes.size();
+            while (i < len && idxNodes[i]->getOp() == COMPARISON_OP::GE)
+            {
+                isStart = true;
+                startOp = COMPARISON_OP::GE;
+                startKey = std::get<int>(idxNodes[i]->getConvertedValue());
+                ++i;
+            }
+            while (i < len && idxNodes[i]->getOp() == COMPARISON_OP::GE)
+            {
+                isStart = true;
+                startOp = COMPARISON_OP::GT;
+                startKey = std::get<int>(idxNodes[i]->getConvertedValue());
+                ++i;
+            }
+            while (i < len && idxNodes[i]->getOp() == COMPARISON_OP::LE)
+            {
+                isEnd = true;
+                endOp = COMPARISON_OP::LE;
+                endKey = std::get<int>(idxNodes[i]->getConvertedValue());
+                ++i;
+            }
+            while (i < len && idxNodes[i]->getOp() == COMPARISON_OP::LT)
+            {
+                isEnd = true;
+                endOp = COMPARISON_OP::LT;
+                endKey = std::get<int>(idxNodes[i]->getConvertedValue());
+                ++i;
+            }
+            if (isStart && isEnd)
+            {
+                IndexHandler::getInstance().searchRangeStartEndFromIndex(idxName, startKey, startOp, endKey, endOp, offsets);
+            }
+            else if (isStart)
+            {
+                IndexHandler::getInstance().searchRangeStartFromIndex(idxName, startKey, startOp, offsets);
+            }
+            else
+            {
+                IndexHandler::getInstance().searchRangeEndFromIndex(idxName, endKey, endOp, offsets);
+            }
+        }
+        else
+        {
+            int val = std::get<int>(idxNodes[0]->getConvertedValue());
+            IndexHandler::getInstance().searchRangeEndFromIndex(idxName, val, COMPARISON_OP::LT, offsets);
+            IndexHandler::getInstance().searchRangeEndFromIndex(idxName, val, COMPARISON_OP::GT, offsets);
+        }
+    }
+    else
+    {
+        std::string idxName = tableName + "_" + "ID" + "_idx";
+        IndexHandler::getInstance().getAllFromIndex(idxName, offsets);
+    }
+    std::cout << "Ovde sam i resords size is: " << offsets.size() << std::endl;
+    TableSchema tb = SystemTableManager::getInstance().getAllTableSchemas()[tableName];
+    std::vector<ColumnSchema> clSchemas = SystemTableManager::getInstance().getAllColumnSchemasForTable(tableName);
+    std::vector<Record> records;
+    for (auto offset : offsets)
+    {
+        std::cout << "Dodavanje rekorda!" << std::endl;
+        uint64_t pageId = offset.first;
+        uint64_t slotIdx = offset.second;
+        // std::cout << "page id: " << pageId << " slot idx: " << slotIdx;
+        Page *p = BufferManager::getInstance().fetchPage(tableName, pageId);
+        std::vector<char> record;
+        p->readRecord(slotIdx, record);
+        // std::cout << " Record: " << record.data() << std::endl;
+        // std::cout << "I am here!" << std::endl;
+        Record r(tb, clSchemas, record.data());
+        r.deserializeData();
+        records.push_back(r);
+        for (auto v : r.getValues())
+        {
+            std::cout << v.first << " ";
+            TypeConverter::getInstance().printDataTypeFormatted(v.second, 10);
+        }
+    }
+
+    std::vector<Record> resultRecords;
+    if (tree == nullptr)
+    {
+        resultRecords = records;
+    }
+    else
+    {
+        for (auto &record : records)
+        {
+            std::cout << "I am evaluating a record!" << std::endl;
+            if (tree->evaluateRecord(record))
+            {
+                resultRecords.push_back(record);
+            }
+        }
+    }
+
+    std::cout << "Done evaluating!" << std::endl;
+    if (orderCol.size() > 0)
+    {
+        std::sort(resultRecords.begin(), resultRecords.end(), RecordComparator(orderCol));
+    }
+
+    for (const auto &col : cols)
+    {
+        std::cout << std::left << std::setw(15) << col;
+    }
+    std::cout << "\n"
+              << std::string(15 * cols.size(), '-') << "\n";
+
+    for (auto &record : resultRecords)
+    {
+        for (auto &col : cols)
+        {
+            TypeConverter::getInstance().printDataTypeFormatted(record.getValues()[col], 15);
+        }
+        std::cout << std::endl;
+    }
 }

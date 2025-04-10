@@ -9,7 +9,7 @@
 class Record
 {
 public:
-    Record(TableSchema &tbSchema, std::vector<ColumnSchema> &cols, char *data);
+    Record(TableSchema tbSchema, std::vector<ColumnSchema> cols, char *data);
     char *readData() { return data; }
     void deserializeData();
     std::unordered_map<std::string, DataType> &getValues() { return values; }
@@ -18,7 +18,7 @@ public:
 private:
     char *data;
     TableSchema tb;
-    std::vector<ColumnSchema> &cols;
+    std::vector<ColumnSchema> cols;
     std::unordered_map<std::string, DataType> values;
     std::unordered_map<std::string, char *> rawValues;
 };

@@ -10,6 +10,7 @@ TypeConverter &TypeConverter::getInstance()
 
 DataType TypeConverter::deserializeValue(char *type, const std::string &value)
 {
+    std::cout << "I am here idk whats a problem!" << std::endl;
     std::string str(type);
     std::cout << str << std::endl;
     if (strcmp(type, "INT") == 0)
@@ -28,4 +29,10 @@ DataType TypeConverter::deserializeValue(char *type, const std::string &value)
         std::cerr << "Unsupported column type!" << std::endl;
     }
     return nullptr;
+}
+
+void TypeConverter::printDataTypeFormatted(DataType &data, int width)
+{
+    std::visit([&](const auto &v)
+               { std::cout << std::left << std::setw(width) << v; }, data);
 }

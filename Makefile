@@ -30,7 +30,7 @@ DATABASE_FILES = $(DATABASE_DIR)/DatabaseManager.cpp
 
 # Query Condition Files
 QUERY_CONDITION_DIR = src/query/condition
-QUERY_CONDITION_FILES = $(QUERY_CONDITION_DIR)/ConditionTree.cpp $(QUERY_CONDITION_DIR)/InternalConditionNode.cpp $(QUERY_CONDITION_DIR)/LeafConditionNode.cpp
+QUERY_CONDITION_FILES = $(QUERY_CONDITION_DIR)/ConditionTree.cpp $(QUERY_CONDITION_DIR)/InternalConditionNode.cpp $(QUERY_CONDITION_DIR)/LeafConditionNode.cpp $(QUERY_CONDITION_DIR)/ConditionHandler.cpp
 
 # Storage Files
 STORAGE_DIR = src/storage

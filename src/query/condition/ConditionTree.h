@@ -10,7 +10,8 @@ class ConditionTree
 {
 public:
     ConditionTree(ConditionNode *root);
-    bool evaluateRecord(Record *);
+    bool evaluateRecord(Record &r);
+    ConditionNode *getRoot() { return root; }
 
 private:
     ConditionNode *root;

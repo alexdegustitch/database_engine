@@ -8,7 +8,18 @@ class InternalConditionNode : public ConditionNode
 {
 public:
     InternalConditionNode(LOGICAL_OP op, ConditionNode *left, ConditionNode *right);
-    bool visitChildren(Record *record);
+    bool visitChildren(Record &record);
+
+    ConditionNode *getLeftChild()
+    {
+        return left;
+    }
+    ConditionNode *getRightChild()
+    {
+        return right;
+    }
+
+    LOGICAL_OP getOp() { return op; }
 
 private:
     ConditionNode *left, *right;

@@ -49,24 +49,70 @@ int IndexHandler::deleteRangeFromIndex(std::string file, int keyStart, int keyEn
     return fileToIndex[file]->deleteRangeOfKeys(keyStart, keyEnd);
 }
 
-std::vector<std::pair<uint64_t, uint64_t>> IndexHandler::searchFromIndex(std::string file, int key)
+void IndexHandler::searchFromIndex(std::string file, int key, std::vector<std::pair<uint64_t, uint64_t>> &res)
 {
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return std::vector<std::pair<uint64_t, uint64_t>>{};
+        res.push_back(std::pair<uint64_t, uint64_t>{});
     }
-    return fileToIndex[file]->search(key);
+    for (auto curr : fileToIndex[file]->search(key))
+    {
+        res.push_back(curr);
+    }
 }
 
-std::vector<std::pair<uint64_t, uint64_t>> IndexHandler::getAllFromIndex(std::string file)
+void IndexHandler::searchRangeStartEndFromIndex(std::string file, int keyStart, COMPARISON_OP startOp, int keyEnd, COMPARISON_OP endOp, std::vector<std::pair<uint64_t, uint64_t>> &res)
 {
     if (fileToIndex.find(file) == fileToIndex.end())
     {
         std::cerr << "Cannot find index file!" << std::endl;
-        return std::vector<std::pair<uint64_t, uint64_t>>{};
+        res.push_back(std::pair<uint64_t, uint64_t>{});
     }
-    fileToIndex[file]->getAllLeaves();
+    for (auto curr : fileToIndex[file]->searchRangeStartEnd(keyStart, startOp, keyEnd, endOp))
+    {
+        res.push_back(curr);
+    }
+}
+
+void IndexHandler::searchRangeStartFromIndex(std::string file, int keyStart, COMPARISON_OP startOp, std::vector<std::pair<uint64_t, uint64_t>> &res)
+{
+    if (fileToIndex.find(file) == fileToIndex.end())
+    {
+        std::cerr << "Cannot find index file!" << std::endl;
+        res.push_back(std::pair<uint64_t, uint64_t>{});
+    }
+    for (auto curr : fileToIndex[file]->searchRangeStart(keyStart, startOp))
+    {
+        res.push_back(curr);
+    }
+}
+
+void IndexHandler::searchRangeEndFromIndex(std::string file, int keyEnd, COMPARISON_OP endOp, std::vector<std::pair<uint64_t, uint64_t>> &res)
+{
+    if (fileToIndex.find(file) == fileToIndex.end())
+    {
+        std::cerr << "Cannot find index file!" << std::endl;
+        res.push_back(std::pair<uint64_t, uint64_t>{});
+    }
+    for (auto curr : fileToIndex[file]->searchRangeEnd(keyEnd, endOp))
+    {
+        res.push_back(curr);
+    }
+}
+
+void IndexHandler::getAllFromIndex(std::string file, std::vector<std::pair<uint64_t, uint64_t>> &res)
+{
+    if (fileToIndex.find(file) == fileToIndex.end())
+    {
+        std::cerr << "Cannot find index file!" << std::endl;
+        res.push_back(std::pair<uint64_t, uint64_t>{});
+    }
+
+    for (auto curr : fileToIndex[file]->getAllLeaves())
+    {
+        res.push_back(curr);
+    }
 }
 
 void IndexHandler::deleteAllFromIndex(std::string file)

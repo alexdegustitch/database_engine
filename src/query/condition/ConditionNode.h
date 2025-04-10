@@ -21,6 +21,7 @@ enum COMPARISON_OP
 class ConditionNode
 {
 public:
+    virtual ~ConditionNode() = default;
     bool isLeaf;
     ConditionNode(bool isLeaf = false) : isLeaf(isLeaf) {}
 };

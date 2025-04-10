@@ -1,7 +1,7 @@
 #include "ConditionTree.h"
 ConditionTree::ConditionTree(ConditionNode *root) : root(root) {};
 
-bool ConditionTree::evaluateRecord(Record *record)
+bool ConditionTree::evaluateRecord(Record &record)
 {
     if (root->isLeaf)
     {

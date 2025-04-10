@@ -3,8 +3,32 @@
 antlrcpp::Any SQLQueryVisitor::visitSelectQuery(SQLParser::SelectQueryContext *ctx)
 {
     std::cout << "Visiting Select Query..." << ctx->tableName()->getText() << std::endl;
-    ConditionTree *tree = std::any_cast<ConditionTree *>(visit(ctx->whereClause()));
+    std::string tableName = ctx->tableName()->getText();
+    currentTableName = tableName;
+    std::vector<std::string> cols = std::any_cast<std::vector<std::string>>(visit(ctx->columns()));
+    std::cout << "cols" << std::endl;
+    ConditionTree *tree = nullptr;
+    if (ctx->whereClause())
+    {
 
+        tree = std::any_cast<ConditionTree *>(visit(ctx->whereClause()));
+        std::cout << "Where clause" << std::endl;
+    }
+
+    std::vector<LeafConditionNode *> idxNodes = ConditionHandler::getInstance().findIndexColumn(tableName, tree);
+    // std::cout << "Index Column -> " << idx.indexName << std::endl;
+
+    std::vector<std::pair<std::string, std::string>> orderCol;
+
+    if (ctx->orderByClause())
+    {
+        orderCol.push_back(std::any_cast<std::pair<std::string, std::string>>(visit(ctx->orderByClause())));
+    }
+    else
+    {
+        orderCol.push_back(std::make_pair("ID", "ASC"));
+    }
+    DatabaseManager::getInstance().selectRecord(tableName, cols, tree, idxNodes, orderCol);
     return nullptr;
 }
 
@@ -157,17 +181,25 @@ antlrcpp::Any SQLQueryVisitor::visitValues(SQLParser::ValuesContext *ctx)
     }
     return vals;
 }
-/*antlrcpp::Any SQLQueryVisitor::visitColumns(SQLParser::ColumnsContext *ctx)
-{
-    std::cout << "Visiting Columns ..." << std::endl;
-    std::vector<Column> cols;
 
-    for(auto c: ctx->column()){
-        std::string colName = c->getText();
-        std::string typeName = ->
+antlrcpp::Any SQLQueryVisitor::visitColumns(SQLParser::ColumnsContext *ctx)
+{
+    std::vector<std::string> cols;
+    if (ctx->children.size() == 1 && ctx->children[0]->getText() == "*")
+    {
+        for (ColumnSchema &cs : SystemTableManager::getInstance().getAllColumnSchemasForTable(currentTableName))
+        {
+            cols.push_back(cs.columnName);
+        }
+        return cols;
+    }
+
+    for (int i = 0; i < ctx->column().size(); ++i)
+    {
+        cols.push_back(ctx->column(i)->ID()->getText());
     }
     return cols;
-}*/
+}
 
 antlrcpp::Any SQLQueryVisitor::visitWhereClause(SQLParser::WhereClauseContext *ctx)
 {
@@ -175,6 +207,17 @@ antlrcpp::Any SQLQueryVisitor::visitWhereClause(SQLParser::WhereClauseContext *c
     ConditionNode *root = std::any_cast<ConditionNode *>(visit(ctx->condition()));
     ConditionTree *tree = new ConditionTree(root);
     return tree;
+}
+
+antlrcpp::Any SQLQueryVisitor::visitOrderByClause(SQLParser::OrderByClauseContext *ctx)
+{
+    std::string colName = ctx->column()->getText();
+    std::string dir = "ASC";
+    if (ctx->children.size() == 3)
+    {
+        dir = ctx->children[2]->getText();
+    }
+    return std::make_pair(colName, dir);
 }
 
 antlrcpp::Any SQLQueryVisitor::visitCondition(SQLParser::ConditionContext *ctx)
@@ -188,24 +231,23 @@ antlrcpp::Any SQLQueryVisitor::visitOrCondition(SQLParser::OrConditionContext *c
     for (size_t i = 1; i < ctx->andCondition().size(); ++i)
     {
         ConditionNode *right = std::any_cast<ConditionNode *>(visitAndCondition(ctx->andCondition(i)));
-        InternalConditionNode *res = new InternalConditionNode(LOGICAL_OP::OR, left, right);
-        left = res;
+        left = new InternalConditionNode(LOGICAL_OP::OR, left, right);
     }
 
-    return left;
+    return static_cast<ConditionNode *>(left);
 }
 
 antlrcpp::Any SQLQueryVisitor::visitAndCondition(SQLParser::AndConditionContext *ctx)
 {
+
     ConditionNode *left = std::any_cast<ConditionNode *>(visitBaseCondition(ctx->baseCondition(0)));
 
     for (size_t i = 1; i < ctx->baseCondition().size(); ++i)
     {
         ConditionNode *right = std::any_cast<ConditionNode *>(visitBaseCondition(ctx->baseCondition(i)));
-        InternalConditionNode *res = new InternalConditionNode(LOGICAL_OP::AND, left, right);
-        left = res;
+        left = new InternalConditionNode(LOGICAL_OP::AND, left, right);
     }
-    return left;
+    return static_cast<ConditionNode *>(left);
 }
 
 antlrcpp::Any SQLQueryVisitor::visitBaseCondition(SQLParser::BaseConditionContext *ctx)
@@ -236,6 +278,7 @@ antlrcpp::Any SQLQueryVisitor::visitColumnValueCondition(SQLParser::ColumnValueC
 
     const char *value = ctx->value()->getText().c_str();
 
-    LeafConditionNode *node = new LeafConditionNode(op, colName, value);
-    return node;
+    LeafConditionNode *node = new LeafConditionNode(op, currentTableName, colName, value);
+
+    return static_cast<ConditionNode *>(node);
 }

@@ -1,8 +1,8 @@
 #include "InternalConditionNode.h"
 
-InternalConditionNode::InternalConditionNode(LOGICAL_OP op, ConditionNode *left, ConditionNode *right) : ConditionNode(false) {}
+InternalConditionNode::InternalConditionNode(LOGICAL_OP op, ConditionNode *left, ConditionNode *right) : ConditionNode(false), op(op), left(left), right(right) {}
 
-bool InternalConditionNode::visitChildren(Record *record)
+bool InternalConditionNode::visitChildren(Record &record)
 {
 
     if (left->isLeaf)

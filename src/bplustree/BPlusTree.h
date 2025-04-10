@@ -9,6 +9,7 @@
 #include <iostream>
 #include <math.h>
 #include <queue>
+#include "../query/condition/ConditionTree.h"
 
 class BPlusTree
 {
@@ -26,6 +27,17 @@ private:
         {
             int idx = std::upper_bound(curr->keys.begin(), curr->keys.end(), key - 1) - curr->keys.begin();
             curr = IndexManager::readNode(file, static_cast<InternalNode *>(curr)->children[idx], maxKeys);
+        }
+        return static_cast<LeafNode *>(curr);
+    }
+
+    LeafNode *findLeftmostLeaf()
+    {
+        std::cout << "Find Leftmost Leaf method" << std::endl;
+        Node *curr = IndexManager::readNode(file, rootOffset, maxKeys);
+        while (!curr->isLeaf)
+        {
+            curr = IndexManager::readNode(file, static_cast<InternalNode *>(curr)->children.front(), maxKeys);
         }
         return static_cast<LeafNode *>(curr);
     }
@@ -569,6 +581,92 @@ public:
         while (idx < leaf->keys.size() && leaf->keys[idx] == key)
         {
             res.push_back(leaf->dataReference[idx]);
+            ++idx;
+            if (idx == leaf->keys.size())
+            {
+                leaf = static_cast<LeafNode *>(IndexManager::readNode(file, leaf->next, maxKeys));
+                if (leaf == 0)
+                {
+                    break;
+                }
+                idx = 0;
+            }
+        }
+
+        return res;
+    }
+
+    std::vector<std::pair<uint64_t, uint64_t>> searchRangeStartEnd(int keyStart, COMPARISON_OP startOp, int keyEnd, COMPARISON_OP endOp)
+    {
+        std::cout << "Search Range Start End method" << std::endl;
+        LeafNode *leaf = findLeaf(keyStart);
+
+        std::vector<std::pair<uint64_t, uint64_t>> res;
+        int idx = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), keyStart) - leaf->keys.begin();
+        while (idx < leaf->keys.size() && leaf->keys[idx] >= keyStart && leaf->keys[idx] <= keyEnd)
+        {
+            if (((startOp == COMPARISON_OP::GE && leaf->keys[idx] >= keyStart) || (startOp == COMPARISON_OP::GT && leaf->keys[idx] > keyStart)) &&
+                ((endOp == COMPARISON_OP::LE && leaf->keys[idx] <= keyEnd) || (endOp == COMPARISON_OP::LT && leaf->keys[idx] < keyEnd)))
+            {
+                res.push_back(leaf->dataReference[idx]);
+            }
+            ++idx;
+            if (idx == leaf->keys.size())
+            {
+                leaf = static_cast<LeafNode *>(IndexManager::readNode(file, leaf->next, maxKeys));
+                if (leaf == 0)
+                {
+                    break;
+                }
+                idx = 0;
+            }
+        }
+
+        return res;
+    }
+
+    std::vector<std::pair<uint64_t, uint64_t>> searchRangeStart(int keyStart, COMPARISON_OP startOp)
+    {
+
+        std::cout << "Search Range Start method" << std::endl;
+        LeafNode *leaf = findLeaf(keyStart);
+
+        std::vector<std::pair<uint64_t, uint64_t>> res;
+        int idx = std::lower_bound(leaf->keys.begin(), leaf->keys.end(), keyStart) - leaf->keys.begin();
+        while (idx < leaf->keys.size() && leaf->keys[idx] >= keyStart)
+        {
+            if ((startOp == COMPARISON_OP::GE && leaf->keys[idx] >= keyStart) || (startOp == COMPARISON_OP::GT && leaf->keys[idx] > keyStart))
+            {
+                res.push_back(leaf->dataReference[idx]);
+            }
+            ++idx;
+            if (idx == leaf->keys.size())
+            {
+                leaf = static_cast<LeafNode *>(IndexManager::readNode(file, leaf->next, maxKeys));
+                if (leaf == 0)
+                {
+                    break;
+                }
+                idx = 0;
+            }
+        }
+
+        return res;
+    }
+
+    std::vector<std::pair<uint64_t, uint64_t>> searchRangeEnd(int keyEnd, COMPARISON_OP endOp)
+    {
+        std::cout << "Search Range End method" << std::endl;
+        LeafNode *leaf = findLeftmostLeaf();
+
+        std::vector<std::pair<uint64_t, uint64_t>> res;
+        int idx = 0;
+        while (idx < leaf->keys.size() && leaf->keys[idx] <= keyEnd)
+        {
+            if ((endOp == COMPARISON_OP::LE && leaf->keys[idx] <= keyEnd) || (endOp == COMPARISON_OP::LT && leaf->keys[idx] < keyEnd))
+            {
+                res.push_back(leaf->dataReference[idx]);
+            }
             ++idx;
             if (idx == leaf->keys.size())
             {
