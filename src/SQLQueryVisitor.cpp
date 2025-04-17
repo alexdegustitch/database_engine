@@ -10,7 +10,6 @@ antlrcpp::Any SQLQueryVisitor::visitSelectQuery(SQLParser::SelectQueryContext *c
     ConditionTree *tree = nullptr;
     if (ctx->whereClause())
     {
-
         tree = std::any_cast<ConditionTree *>(visit(ctx->whereClause()));
         std::cout << "Where clause" << std::endl;
     }
@@ -52,6 +51,22 @@ antlrcpp::Any SQLQueryVisitor::visitCreateQuery(SQLParser::CreateQueryContext *c
     SystemTableManager::getInstance().insertIndexSchema(tableName, primaryKeyCol, fullName, true);
     IndexHandler::getInstance().loadIndex(fullName, 4);
 
+    return nullptr;
+}
+
+antlrcpp::Any SQLQueryVisitor::visitDeleteQuery(SQLParser::DeleteQueryContext *ctx)
+{
+    std::string tableName = ctx->tableName()->getText();
+    currentTableName = tableName;
+    ConditionTree *tree = nullptr;
+    if (ctx->whereClause())
+    {
+        std::cout << "Where clause" << std::endl;
+        tree = std::any_cast<ConditionTree *>(visit(ctx->whereClause()));
+        std::cout << "Where clause end" << std::endl;
+    }
+    std::vector<LeafConditionNode *> idxNodes = ConditionHandler::getInstance().findIndexColumn(tableName, tree);
+    DatabaseManager::getInstance().deleteRecord(tableName, tree, idxNodes);
     return nullptr;
 }
 

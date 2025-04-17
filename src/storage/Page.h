@@ -13,6 +13,12 @@ struct PageHeader
     uint64_t freeSpaceOffset;
 };
 
+struct Slot
+{
+    int offset;
+    int length;
+};
+
 class Page
 {
 public:
@@ -32,7 +38,7 @@ public:
 private:
     PageHeader header;
     bool dirty = false;
-    std::vector<uint64_t> slotDirectory;
+    std::vector<Slot> slotDirectory;
     char data[PAGE_SIZE - sizeof(PageHeader)];
 };
 

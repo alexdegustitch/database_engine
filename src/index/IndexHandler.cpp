@@ -39,6 +39,16 @@ int IndexHandler::deleteFromIndex(std::string file, int key)
     return fileToIndex[file]->deleteKey(key);
 }
 
+int IndexHandler::deleteFromIndex(std::string file, int key, uint64_t pageId, uint64_t slotIdx)
+{
+    if (fileToIndex.find(file) == fileToIndex.end())
+    {
+        std::cerr << "Cannot find index file!" << std::endl;
+        return -1;
+    }
+    return fileToIndex[file]->deleteKey(key, pageId, slotIdx);
+}
+
 int IndexHandler::deleteRangeFromIndex(std::string file, int keyStart, int keyEnd)
 {
     if (fileToIndex.find(file) == fileToIndex.end())

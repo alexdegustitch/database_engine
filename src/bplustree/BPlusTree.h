@@ -747,6 +747,80 @@ public:
         return numDeleted;
     }
 
+    int deleteKey(int key, uint64_t pageId, uint64_t slotIdx)
+    {
+        std::cout << "DeleteKey method" << std::endl;
+        LeafNode *leaf = findLeaf(key);
+
+        auto it = std::find(leaf->keys.begin(), leaf->keys.end(), key);
+        int idx = it - leaf->keys.begin();
+        bool found = false;
+        while (!found && leaf)
+        {
+            for (int i = idx; i < leaf->keys.size(); ++i, ++it)
+            {
+                if (leaf->dataReference[i].first == pageId && leaf->dataReference[i].second == slotIdx)
+                {
+                    found = true;
+                    idx = i;
+                    break;
+                }
+            }
+            if (found)
+            {
+                break;
+            }
+            found = false;
+            idx = 0;
+            leaf = static_cast<LeafNode *>(IndexManager::readNode(file, leaf->next, maxKeys));
+            if (leaf)
+            {
+                it = leaf->keys.begin();
+            }
+        }
+        if (!found)
+        {
+            std::cout << "Key not found Error!! key = " << key << std::endl;
+            return 0;
+        }
+        std::cout << "Key found!!! -> key: " << leaf->keys[idx] << " page id: " << leaf->dataReference[idx].first << " slot idx: " << leaf->dataReference[idx].second << " *it = " << *it << std::endl;
+        // int idx = it - leaf->keys.begin();
+        Node *parent = IndexManager::readNode(file, leaf->parent, maxKeys);
+        // the rightmost in the leaf
+        if (parent != nullptr && idx > 0 && idx == leaf->keys.size() - 1)
+        {
+            auto itPar = std::lower_bound(parent->keys.begin(), parent->keys.end(), key);
+            if (itPar != parent->keys.end())
+            {
+                int idx_parent = itPar - parent->keys.begin();
+                parent->keys[idx_parent] = leaf->keys[idx - 1];
+            }
+        }
+
+        leaf->keys.erase(it);
+        leaf->dataReference.erase(leaf->dataReference.begin() + idx);
+        /*for (int c : leaf->keys)
+        {
+            std::cout << c << std::endl;
+        }
+        for (int c : leaf->parent->keys)
+        {
+            std::cout << c << std::endl;
+        }*/
+
+        IndexManager::writeNode(file, leaf->offset, leaf, maxKeys);
+        if (parent != nullptr)
+        {
+            IndexManager::writeNode(file, parent->offset, parent, maxKeys);
+        }
+        if (leaf->keys.size() < ceil(maxKeys / 2.0))
+        {
+            handleUnderflow(leaf->offset);
+        }
+        int numDeleted = 1;
+        return numDeleted;
+    }
+
     int deleteRangeOfKeys(int keyStart, int keyEnd)
     {
         std::cout << "DeleteRangeOfKeys method" << std::endl;

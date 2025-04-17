@@ -123,6 +123,7 @@ int SystemTableManager::insertTableSchema(const std::string &tableName, std::vec
         std::string id = std::string(clSchema.columnName) + ":" + std::to_string(clSchema.tableId);
         std::cout << "Insert clmn schema: " << id << std::endl;
         columnNameToSchema[id] = clSchema;
+        columnIdToName[colId] = clSchema.columnName;
         columnSchemasForTable[tableId].push_back(clSchema);
         colsInTable[tableId].push_back(clSchema.columnName);
         ++colId;

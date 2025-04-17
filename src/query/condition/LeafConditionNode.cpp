@@ -4,6 +4,7 @@ LeafConditionNode::LeafConditionNode(COMPARISON_OP op, std::string tableName, st
 {
     int tableId = SystemTableManager::getInstance().getAllTableSchemas()[tableName].tableId;
     std::string col = colName + ":" + std::to_string(tableId);
+    std::cout << col << std::endl;
     char *type = SystemTableManager::getInstance().getAllColumnSchema()[col].type;
     convertedValue = TypeConverter::getInstance().deserializeValue(type, recordValue);
     std::cout << "Table id: " << tableId << " col: " << col << " convertedValue: ";

@@ -14,6 +14,7 @@ public:
     void loadIndex(std::string fileName, int maxKeys);
     void insertIntoIndex(std::string file, int key, uint64_t pageId, uint64_t slotIdx);
     int deleteFromIndex(std::string file, int key);
+    int deleteFromIndex(std::string file, int key, uint64_t pageId, uint64_t slotIdx);
     int deleteRangeFromIndex(std::string file, int keyStart, int keyEnd);
     void searchFromIndex(std::string file, int key, std::vector<std::pair<uint64_t, uint64_t>> &res);
     void searchRangeStartEndFromIndex(std::string file, int keyStart, COMPARISON_OP startOp, int keyEnd, COMPARISON_OP endOp, std::vector<std::pair<uint64_t, uint64_t>> &res);

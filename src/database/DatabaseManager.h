@@ -20,7 +20,7 @@ public:
     bool insertRecord(const std::string &tableName, std::vector<std::string> &cols, std::vector<std::string> &values);
     bool selectRecord(const std::string &tableName, std::vector<std::string> &cols, ConditionTree *tree, std::vector<LeafConditionNode *> idxNodes, std::vector<std::pair<std::string, std::string>> &orderCol);
     bool updateRecord();
-    bool deleteRecord();
+    bool deleteRecord(const std::string &tableName, ConditionTree *tree, std::vector<LeafConditionNode *> idxNodes);
 };
 
 #endif

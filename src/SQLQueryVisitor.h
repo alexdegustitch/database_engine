@@ -13,9 +13,10 @@ class SQLQueryVisitor : public SQLBaseVisitor
 public:
     antlrcpp::Any visitSelectQuery(SQLParser::SelectQueryContext *ctx) override;
     antlrcpp::Any visitCreateQuery(SQLParser::CreateQueryContext *ctx) override;
+    antlrcpp::Any visitInsertQuery(SQLParser::InsertQueryContext *ctx) override;
+    antlrcpp::Any visitDeleteQuery(SQLParser::DeleteQueryContext *ctx) override;
     antlrcpp::Any visitColumns(SQLParser::ColumnsContext *ctx) override;
     antlrcpp::Any visitTableValues(SQLParser::TableValuesContext *ctx) override;
-    antlrcpp::Any visitInsertQuery(SQLParser::InsertQueryContext *ctx) override;
     antlrcpp::Any visitValues(SQLParser::ValuesContext *ctx) override;
     antlrcpp::Any visitInsertColumns(SQLParser::InsertColumnsContext *ctx) override;
     antlrcpp::Any visitWhereClause(SQLParser::WhereClauseContext *ctx) override;
